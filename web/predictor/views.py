@@ -6,6 +6,8 @@ from . import forms
 def home(request):
     return render(request, 'predictor/home.html')
 
+def result(request):
+    return render(request, 'predictor/result.html')
 def prediction_form(request):
     prediction_form = forms.PredictionForm()
 
