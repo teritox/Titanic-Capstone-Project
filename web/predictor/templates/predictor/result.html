@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Titanic Capstone</title>
-</head>
-<body>
-    <h1>Result</h1>
-    {% if survived %}
-    <p>They would survive!</p>
-    {% else %}
-    <p>They would not survive</p>
+{% extends "base.html" %}
 
-    {% endif %}
-</body>
-</html>
+{% block body_block %}
+
+<h1>Result</h1>
+{% if survived %}
+<p>They would survive!</p>
+{% else %}
+<p>They would not survive</p>
+
+{% endif %}
+
+{% endblock %}
