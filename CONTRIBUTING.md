@@ -56,6 +56,26 @@ git add -A
 git commit -m "Clear description of change"
 ```
 
+---
+
+## Commit message guidelines
+
+Use [Chris Beams' seven rules](https://chris.beams.io/git-commit#seven-rules) as the required standard to keep the history readable and consistent.
+
+Short version:
+
+* Start with a capital letter.
+* Do not include a trailing period.
+* Keep it to one concise line.
+
+Examples:
+
+```
+Add contribution guidelines
+Handle missing passenger age
+Add survival prediction endpoint
+```
+
 ### 4. Sync again before pushing
 
 This reduces conflicts.
