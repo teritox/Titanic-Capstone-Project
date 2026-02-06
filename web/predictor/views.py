@@ -10,8 +10,12 @@ def home(request):
 def history(request):
     predictions = []
     return render(request, 'predictor/history.html', {'predictions': predictions})
+
+
 def result(request):
     return render(request, 'predictor/result.html')
+
+
 def prediction_form(request):
     prediction_form = forms.PredictionForm()
 
