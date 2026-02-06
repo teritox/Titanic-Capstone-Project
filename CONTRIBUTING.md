@@ -42,10 +42,10 @@ git pull --ff-only
 ### 2. Create a work branch
 
 ```
-git switch -c <name>-<short-task>
+git switch -c <short-task-name>
 ```
 
-Example: `alex-login`
+Example: `result-page`
 
 ### 3. Make changes and commit
 
@@ -56,6 +56,26 @@ git add -A
 git commit -m "Clear description of change"
 ```
 
+---
+
+## Commit message guidelines
+
+Use [Chris Beams' seven rules](https://chris.beams.io/git-commit#seven-rules) as the required standard to keep the history readable and consistent.
+
+Short version:
+
+* Start with a capital letter.
+* Do not include a trailing period.
+* Keep it to one concise line.
+
+Examples:
+
+```
+Add contribution guidelines
+Handle missing passenger age
+Add survival prediction endpoint
+```
+
 ### 4. Sync again before pushing
 
 This reduces conflicts.
@@ -63,17 +83,17 @@ This reduces conflicts.
 ```
 git switch development
 git pull --ff-only
-git switch <your-branch>
+git switch <task-branch>
 git merge development
 ```
 
 ### 5. Push and open a pull request
 
 ```
-git push -u origin <your-branch>
+git push -u origin <task-branch>
 ```
 
-Open a pull request from `<your-branch>` to `development`.
+Open a pull request from `<task-branch>` to `development`.
 
 ---
 
