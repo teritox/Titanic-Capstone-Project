@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+
+<h1>History</h1>
+<p>Previous admitted predictions</p>
+
+    <div class="container">
+    {% if predictions %}
+    <table>
+        <thead>
+            <tr>
+                <th>Passenger class</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Siblings/spouses</th>
+                <th>Parch</th>
+                <th>Ticker fare</th>
+                <th>Embark C</th>
+                <th>Embark Q</th>
+                <th>Embark S</th>
+                <th>Survived</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for passenger in predictions %}
+            <tr>
+                {% comment %} Add in the information for each passenger 
+                <td>{{ passenger.attribute}}</td> {% endcomment %}
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>NO WEBPAGES FOUND!</p>
+    {% endif %}
+</div>
+
+{% endblock %}

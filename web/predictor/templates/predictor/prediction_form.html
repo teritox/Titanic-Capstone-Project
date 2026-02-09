@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+
+<div class="container">
+<h1>Prediction form</h1>
+<h3>Page for sumbitting form</h3>
+
+<form method="post">
+    {% csrf_token %}
+    {{ prediction_form.as_p }}
+    <input type="submit" value="Predict">
+</form>
+</div>
+
+{% endblock %}
