@@ -39,13 +39,26 @@ git switch development
 git pull --ff-only
 ```
 
-### 2. Create a work branch
+### 2. Switch to a feature branch
 
+If continuing work on an existing feature branch
 ```
-git switch -c <name>-<short-task>
+git switch <feature-branch>
 ```
 
-Example: `alex-login`
+If starting work on a new feature branch
+```
+git switch -c <feature-branch>
+```
+Branch naming guidelines:
+
+* Use 1-3 words
+* Use lowercase letters only
+* Separate words with hyphens
+
+Valid examples:
+* `result-page`
+* `survival-model-tuning`
 
 ### 3. Make changes and commit
 
@@ -56,6 +69,26 @@ git add -A
 git commit -m "Clear description of change"
 ```
 
+---
+
+## Commit message guidelines
+
+Use [Chris Beams' seven rules](https://chris.beams.io/git-commit#seven-rules) as the required standard to keep the history readable and consistent.
+
+Short version:
+
+* Start with a capital letter.
+* Do not include a trailing period.
+* Keep it to one concise line.
+
+Examples:
+
+```
+Add contribution guidelines
+Handle missing passenger age
+Add survival prediction endpoint
+```
+
 ### 4. Sync again before pushing
 
 This reduces conflicts.
@@ -63,26 +96,30 @@ This reduces conflicts.
 ```
 git switch development
 git pull --ff-only
-git switch <your-branch>
+git switch <feature-branch>
 git merge development
 ```
 
 ### 5. Push and open a pull request
 
+If working on a new feature branch, set upstream
 ```
-git push -u origin <your-branch>
+git push --set-upstream origin <feature-branch>
+```
+If branch already exists upstream
+```
+git push -u origin <feature-branch>
 ```
 
-Open a pull request from `<your-branch>` to `development`.
+Open a pull request from `<feature-branch>` to `development`.
 
 ---
 
 ## Pull request rules
 
-* Review pull requests when possible.
+* Review pull requests during the day.
 * Merge method: **Create a merge commit** (do not squash).
   This preserves the full commit history for each contributor.
-* Delete the work branch after merging.
 
 ---
 
@@ -99,7 +136,8 @@ Only merge to `main` at agreed milestones (demos, checkpoints, final submission)
 
 ## Hard rules
 
-* Always run `git pull --ff-only` before starting work and before pushing.
+* Always run `git pull --ff-only` before starting work
+* Always pull and merge the latest changes from `development` before pushing.
 * Never rebase `development` or `main`.
 * If `git pull --ff-only` fails, stop and ask for help before proceeding.
 
