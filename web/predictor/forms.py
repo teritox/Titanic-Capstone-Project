@@ -22,7 +22,12 @@ class PredictionForm(forms.Form):
     
     siblings_or_spouses = forms.IntegerField()
     parch = forms.IntegerField()
-    ticket_fare = forms.IntegerField()
+    ticket_fare = forms.DecimalField(
+        min_value=0,
+        max_value=500,
+        decimal_places=3,  # digits after the decimal
+        widget=forms.NumberInput(attrs={'placeholder': 'Enter ticket fare'}))
+    
     embark_c = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
     embark_q = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
     embark_s = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
