@@ -15,7 +15,11 @@ class PredictionForm(forms.Form):
         coerce=int,  # converts string → integer
         widget=forms.Select)
     
-    age = forms.IntegerField()
+    age = forms.IntegerField(
+        min_value=0,
+        max_value=100,
+        widget=forms.NumberInput(attrs={'placeholder':'0-100'}))
+    
     siblings_or_spouses = forms.IntegerField()
     parch = forms.IntegerField()
     ticket_fare = forms.IntegerField()
