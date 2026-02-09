@@ -28,6 +28,11 @@ class PredictionForm(forms.Form):
         decimal_places=3,  # digits after the decimal
         widget=forms.NumberInput(attrs={'placeholder': 'Enter ticket fare'}))
     
-    embark_c = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
-    embark_q = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
-    embark_s = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
+    embark = forms.TypedChoiceField(
+        choices=[('C', 'C'),('Q', 'Q'),('S', 'S'),('Unknown', 'Unknown')],
+        coerce=str,  # ensures value is always a string
+        widget=forms.Select)
+    
+    #embark_c = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
+    #embark_q = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
+    #embark_s = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': '1 if applies'}))
