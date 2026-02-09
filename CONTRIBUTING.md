@@ -102,6 +102,11 @@ git merge development
 
 ### 5. Push and open a pull request
 
+If working on a new feature branch, set upstream
+```
+git push --set-upstream origin <feature-branch>
+```
+If branch already exists upstream
 ```
 git push -u origin <feature-branch>
 ```
