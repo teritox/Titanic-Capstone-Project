@@ -39,13 +39,26 @@ git switch development
 git pull --ff-only
 ```
 
-### 2. Create a work branch
+### 2. Switch to a feature branch
 
+If continuing work on an existing feature branch
 ```
-git switch -c <short-task-name>
+git switch <feature-branch>
 ```
 
-Example: `result-page`
+If starting work on a new feature branch
+```
+git switch -c <feature-branch>
+```
+Branch naming guidelines:
+
+* Use 1-3 words
+* Use lowercase letters only
+* Separate words with hyphens
+
+Valid examples:
+* `result-page`
+* `survival-model-tuning`
 
 ### 3. Make changes and commit
 
@@ -83,26 +96,30 @@ This reduces conflicts.
 ```
 git switch development
 git pull --ff-only
-git switch <task-branch>
+git switch <feature-branch>
 git merge development
 ```
 
 ### 5. Push and open a pull request
 
+If working on a new feature branch, set upstream
 ```
-git push -u origin <task-branch>
+git push --set-upstream origin <feature-branch>
+```
+If branch already exists upstream
+```
+git push -u origin <feature-branch>
 ```
 
-Open a pull request from `<task-branch>` to `development`.
+Open a pull request from `<feature-branch>` to `development`.
 
 ---
 
 ## Pull request rules
 
-* Review pull requests when possible.
+* Review pull requests during the day.
 * Merge method: **Create a merge commit** (do not squash).
   This preserves the full commit history for each contributor.
-* Delete the work branch after merging.
 
 ---
 
@@ -119,7 +136,8 @@ Only merge to `main` at agreed milestones (demos, checkpoints, final submission)
 
 ## Hard rules
 
-* Always run `git pull --ff-only` before starting work and before pushing.
+* Always run `git pull --ff-only` before starting work
+* Always pull and merge the latest changes from `development` before pushing.
 * Never rebase `development` or `main`.
 * If `git pull --ff-only` fails, stop and ask for help before proceeding.
 
