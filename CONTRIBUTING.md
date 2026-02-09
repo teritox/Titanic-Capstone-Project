@@ -50,8 +50,15 @@ If starting work on a new feature branch
 ```
 git switch -c <feature-branch>
 ```
+Branch naming guidelines:
 
-Example branch name: `result-page`
+* Use 1-3 words
+* Use lowercase letters only
+* Separate words with hyphens
+
+Valid examples:
+* `result-page`
+* `survival-model-tuning`
 
 ### 3. Make changes and commit
 
