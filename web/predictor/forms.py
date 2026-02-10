@@ -2,6 +2,7 @@ from django import forms
 
 class PredictionForm(forms.Form):
 
+    # Choice options with placeholder first
     PASSENGER_CLASS_CHOICES = [
         ("", "Select Passenger Class"),
         (1, "1st Class"),
@@ -20,37 +21,49 @@ class PredictionForm(forms.Form):
         ("C", "Cherbourg"),
         ("Q", "Queenstown"),
         ("S", "Southampton"),
+        ("Unknown", "Unknown")
     ]
 
-    passenger_class = forms.ChoiceField(
+    # TypedChoiceFields to ensure proper types
+    passenger_class = forms.TypedChoiceField(
         choices=PASSENGER_CLASS_CHOICES,
+        coerce=int,
         widget=forms.Select(attrs={"class": "form-control placeholder-select"})
     )
 
-    gender = forms.ChoiceField(
+    gender = forms.TypedChoiceField(
         choices=GENDER_CHOICES,
+        coerce=int,
         widget=forms.Select(attrs={"class": "form-control placeholder-select"})
     )
 
-    embark = forms.ChoiceField(
+    embark = forms.TypedChoiceField(
         choices=EMBARK_CHOICES,
+        coerce=str,
         widget=forms.Select(attrs={"class": "form-control placeholder-select"})
     )
 
+    # Integer fields with validation and styling
     age = forms.IntegerField(
+        min_value=0,
+        max_value=100,
         widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Enter age"})
     )
 
     siblings_or_spouses = forms.IntegerField(
-        label="Siblings / Spouses Aboard",
+        min_value=0,
         widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Number of siblings/spouses"})
     )
 
     parch = forms.IntegerField(
-        label="Parents / Children Aboard",
+        min_value=0,
         widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Number of parents/children"})
     )
 
-    ticket_fare = forms.FloatField(
-        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Ticket fare"})
+    # Ticket fare as DecimalField for precise ML input
+    ticket_fare = forms.DecimalField(
+        min_value=0,
+        max_value=500,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Enter ticket fare"})
     )
