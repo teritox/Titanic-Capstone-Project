@@ -1,8 +1,8 @@
 from django import forms
 
+
 class PredictionForm(forms.Form):
 
-    
     PASSENGER_CLASS_CHOICES = [
         ("", "Select Passenger Class"),
         (1, "1st Class"),
@@ -18,51 +18,55 @@ class PredictionForm(forms.Form):
 
     EMBARK_CHOICES = [
         ("", "Select Embark Location"),
-        ("C", "Cherbourg"),
-        ("Q", "Queenstown"),
-        ("S", "Southampton")
+        ("Embarked_C", "Cherbourg"),
+        ("Embarked_Q", "Queenstown"),
+        ("Embarked_S", "Southampton"),
     ]
 
-    
     passenger_class = forms.TypedChoiceField(
         choices=PASSENGER_CLASS_CHOICES,
         coerce=int,
-        widget=forms.Select(attrs={"class": "form-control placeholder-select"})
+        widget=forms.Select(attrs={"class": "form-control placeholder-select"}),
     )
 
     gender = forms.TypedChoiceField(
         choices=GENDER_CHOICES,
         coerce=int,
-        widget=forms.Select(attrs={"class": "form-control placeholder-select"})
+        widget=forms.Select(attrs={"class": "form-control placeholder-select"}),
     )
 
     embark = forms.TypedChoiceField(
         choices=EMBARK_CHOICES,
         coerce=str,
-        widget=forms.Select(attrs={"class": "form-control placeholder-select"})
+        widget=forms.Select(attrs={"class": "form-control placeholder-select"}),
     )
 
-   
     age = forms.IntegerField(
         min_value=0,
         max_value=100,
-        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Enter age"})
+        widget=forms.NumberInput(
+            attrs={"class": "form-control", "placeholder": "Enter age"}
+        ),
     )
 
     siblings_or_spouses = forms.IntegerField(
         min_value=0,
-        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Number of siblings/spouses"})
+        widget=forms.NumberInput(
+            attrs={"class": "form-control", "placeholder": "Number of siblings/spouses"}
+        ),
     )
 
     parch = forms.IntegerField(
         min_value=0,
-        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Number of parents/children"})
+        widget=forms.NumberInput(
+            attrs={"class": "form-control", "placeholder": "Number of parents/children"}
+        ),
     )
 
-    
-    ticket_fare = forms.DecimalField(
+    ticket_fare = forms.FloatField(
         min_value=0,
         max_value=500,
-        decimal_places=2,
-        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Enter ticket fare"})
+        widget=forms.NumberInput(
+            attrs={"class": "form-control", "placeholder": "Enter ticket fare"}
+        ),
     )
