@@ -1,16 +1,48 @@
 {% extends "base.html" %}
 
 {% block body_block %}
-
 <div class="container">
-<h1>Prediction form</h1>
-<h3>Page for sumbitting form</h3>
-
-<form method="post">
-    {% csrf_token %}
-    {{ prediction_form.as_p }}
-    <input type="submit" value="Predict">
-</form>
+    <div class="pt-3">
+    <h1 class="text-center mb-4">Prediction Form</h1>
 </div>
 
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% for field in prediction_form %}
+                            <div class="mb-3">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% for error in field.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Predict</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS to handle dropdown placeholder color -->
+<script>
+document.querySelectorAll('.placeholder-select').forEach(select => {
+    const updateColor = () => {
+        select.style.color = select.value === "" ? '#6c757d' : '#212529';
+    };
+
+    select.addEventListener('change', updateColor);
+    updateColor(); // Initialize on page load
+});
+</script>
 {% endblock %}
