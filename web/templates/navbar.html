@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-light">
+<!-- <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}">Titanic Capstone</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,6 +10,23 @@
                 <a class="nav-link" href="{% url 'prediction_form' %}">Prediction Form</a>
                 <a class="nav-link" href="{% url 'result' %}">Result</a>
                 <a class="nav-link" href="{% url 'history' %}">History</a>
+            </div>
+        </div>
+    </div>
+</nav> -->
+
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Titanic Capstone</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'prediction_form' %}active{% endif %}" href="{% url 'prediction_form' %}">Prediction Form</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'result' %}active{% endif %}" href="{% url 'result' %}">Result</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'history' %}active{% endif %}" href="{% url 'history' %}">History</a>
             </div>
         </div>
     </div>
