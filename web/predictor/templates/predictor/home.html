@@ -2,55 +2,60 @@
 
 {% block body_block %}
 
-<h1>Titanic++ Survival Prediction System</h1>
 
-<p>
-    This web application is part of the Titanic++ Capstone Project. The goal of the project
-    is to design and deploy a complete machine learning system that predicts whether a
-    passenger survived the Titanic disaster using historical data.
-</p>
+<div class="container container-custom">
+    <div class="hero-section">
+        <div class="hero-overlay">
+            <h1>Titanic Survival Prediction System</h1>
+            <p>Machine Learning–powered survival analysis</p>
+        </div>
+    </div>
 
-<h2>Project Purpose</h2>
-<p>
-    Using real-world passenger data from the Titanic dataset, this project demonstrates
-    the full machine learning workflow — from data exploration and preprocessing to
-    model training, evaluation, and deployment as a web application.
-</p>
-<p>
-    The system allows users to enter passenger information and receive a survival
-    prediction along with the model’s confidence.
-</p>
 
-<h2>Data and Machine Learning Approach</h2>
-<p>
-    The machine learning model is trained on historical Titanic passenger data containing
-    both numerical and categorical features, as well as missing values. Data cleaning and
-    preprocessing steps are applied to handle these challenges in a justified and systematic
-    way.
-</p>
-<p>
-    Feature engineering is used to improve model performance by creating meaningful
-    features such as passenger titles, family size, and age groups. The final model is
-    evaluated using multiple metrics, including accuracy and confusion matrix analysis.
-</p>
+    
 
-<h2>System Design and Architecture</h2>
-<p>
-    The application is built using Django as the web framework and scikit-learn for machine
-    learning. The trained machine learning pipeline is saved and loaded into the Django
-    application for prediction purposes only, ensuring a clear separation between model
-    training and web logic.
-</p>
-<p>
-    Django handles user input validation, prediction requests, and database storage.
-    Each prediction, including input data, predicted outcome, prediction probability, and
-    timestamp, is stored in the database and can be viewed on the history page.
-</p>
+    <h2>Project Purpose</h2>
+    <p>
+        Using real-world passenger data from the Titanic dataset, this project demonstrates
+        the full machine learning workflow — from data exploration and preprocessing to
+        model training, evaluation, and deployment as a web application.
+    </p>
+    <p>
+        The system allows users to enter passenger information and receive a survival
+        prediction along with the model’s confidence.
+    </p>
 
-<h2>Using the Application</h2>
-<p>
-    Navigate to the prediction page to enter passenger details and receive a survival
-    prediction. Previous predictions can be reviewed on the history page.
-</p>
+    <h2>Data and Machine Learning Approach</h2>
+    <p>
+        The machine learning model is trained on historical Titanic passenger data containing
+        both numerical and categorical features, as well as missing values. Data cleaning and
+        preprocessing steps are applied to handle these challenges in a justified and systematic
+        way.
+    </p>
+    <p>
+        Feature engineering is used to improve model performance by creating meaningful
+        features such as passenger titles, family size, and age groups. The final model is
+        evaluated using multiple metrics, including accuracy and confusion matrix analysis.
+    </p>
+
+    <h2>System Design and Architecture</h2>
+    <p>
+        The application is built using Django as the web framework and scikit-learn for machine
+        learning. The trained machine learning pipeline is saved and loaded into the Django
+        application for prediction purposes only, ensuring a clear separation between model
+        training and web logic.
+    </p>
+    <p>
+        Django handles user input validation, prediction requests, and database storage.
+        Each prediction, including input data, predicted outcome, prediction probability, and
+        timestamp, is stored in the database and can be viewed on the history page.
+    </p>
+
+    <h2>Using the Application</h2>
+    <p>
+        Navigate to the prediction page to enter passenger details and receive a survival
+        prediction. Previous predictions can be reviewed on the history page.
+    </p>
+</div>
 
 {% endblock %}
