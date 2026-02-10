@@ -122,6 +122,7 @@ Add an explanation of what the pull request does in the form "This pull request.
 * Check PRs a few times a day, and aim to leave a first review within 3-4 working hours.
 * When you have created a PR, inform the team in the team chat with the PR title and link.
 * When reviewing a PR, inform the team by reacting to the PR message with :raisedhand: and assign yourself to the pull request in GitHub.
+* After 1 approval and passing checks, the PR author merges. If the author is unavailable for 1-2 working hours, the approving reviewer may merge.
 * Merge method: **Create a merge commit** (do not squash).
   This preserves the full commit history for each contributor.
 
