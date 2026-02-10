@@ -62,7 +62,7 @@ Instead of using a global average, missing **Age** values were imputed using **t
   Missing `Age` values were filled with the **mean age** of the corresponding title group.  
 
 #### Embarked
-This feature contains only two missing values,which are unlikely to affect the model's performance. Therefor, these values are imputed with **C**
+This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with **C**
 
 #### 2️⃣ Encoding Categorical Variables
   - **Sex:**
