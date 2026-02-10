@@ -36,9 +36,12 @@ Download the Titanic dataset at [Titanic]( https://www.kaggle.com/c/titanic/data
 Go back to [Contents](#contents).
 ## Description of the machine learning models
 
+ 
 
 
-## Project Work Flow
+
+Go back to [Contents](#contents).
+## Overview of the System Architecture
 
 ### 1. Data Preprocessing
 #### 1️⃣ Handling Missing Values
@@ -96,15 +99,6 @@ This feature contains only two missing values,which are unlikely to affect the m
 - Explain how the model is loaded  
 - Show form design and validation  
 - Explain preprocessing applied to user input  
-- Describe how predictions are displayed  
-
-### 4. Feedback Loop
-- Explain how new data can be collected  
-- Describe retraining process
-
-
-Go back to [Contents](#contents).
-## Overview of the system architecture
-overviews
+- Describe how predictions are displayed 
 
 Go back to [Contents](#contents).
