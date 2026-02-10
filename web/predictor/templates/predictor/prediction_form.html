@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<!-- JS to handle dropdown placeholder color -->
+
 <script>
 document.querySelectorAll('.placeholder-select').forEach(select => {
     const updateColor = () => {
@@ -42,7 +42,7 @@ document.querySelectorAll('.placeholder-select').forEach(select => {
     };
 
     select.addEventListener('change', updateColor);
-    updateColor(); // Initialize on page load
+    updateColor(); 
 });
 </script>
 {% endblock %}

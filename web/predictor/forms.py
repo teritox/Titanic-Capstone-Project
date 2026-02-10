@@ -2,7 +2,7 @@ from django import forms
 
 class PredictionForm(forms.Form):
 
-    # Choice options with placeholder first
+    
     PASSENGER_CLASS_CHOICES = [
         ("", "Select Passenger Class"),
         (1, "1st Class"),
@@ -20,11 +20,10 @@ class PredictionForm(forms.Form):
         ("", "Select Embark Location"),
         ("C", "Cherbourg"),
         ("Q", "Queenstown"),
-        ("S", "Southampton"),
-        ("Unknown", "Unknown")
+        ("S", "Southampton")
     ]
 
-    # TypedChoiceFields to ensure proper types
+    
     passenger_class = forms.TypedChoiceField(
         choices=PASSENGER_CLASS_CHOICES,
         coerce=int,
@@ -43,7 +42,7 @@ class PredictionForm(forms.Form):
         widget=forms.Select(attrs={"class": "form-control placeholder-select"})
     )
 
-    # Integer fields with validation and styling
+   
     age = forms.IntegerField(
         min_value=0,
         max_value=100,
@@ -60,7 +59,7 @@ class PredictionForm(forms.Form):
         widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Number of parents/children"})
     )
 
-    # Ticket fare as DecimalField for precise ML input
+    
     ticket_fare = forms.DecimalField(
         min_value=0,
         max_value=500,
