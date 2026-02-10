@@ -83,6 +83,8 @@ This feature contains only two missing values,which are unlikely to affect the m
 
 #### 3️⃣ Feature Engineering 
 - **FamilySize:**
+  A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
+
 - **Age Bin:** 
 
 ### 2. Model Training
