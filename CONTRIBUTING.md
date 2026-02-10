@@ -100,7 +100,7 @@ git switch <feature-branch>
 git merge development
 ```
 
-### 5. Push and open a pull request
+### 5. Push and open a pull request (PR)
 
 If working on a new feature branch, set upstream
 ```
@@ -113,11 +113,15 @@ git push -u origin <feature-branch>
 
 Open a pull request from `<feature-branch>` to `development`.
 
+Add an explanation of what the pull request does in the form "This pull request..." to give the team a quick overview of the changes.
+
 ---
 
-## Pull request rules
+## Pull request guidelines
 
-* Review pull requests during the day.
+* Check PRs a few times a day, and aim to leave a first review within 3-4 working hours.
+* When you have created a PR, inform the team in the team chat with the PR title and link.
+* When reviewing a PR, inform the team by reacting to the PR message with :raisedhand: and assign yourself to the pull request in GitHub.
 * Merge method: **Create a merge commit** (do not squash).
   This preserves the full commit history for each contributor.
 
