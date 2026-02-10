@@ -18,9 +18,9 @@ class PredictionForm(forms.Form):
 
     EMBARK_CHOICES = [
         ("", "Select Embark Location"),
-        ("C", "Cherbourg"),
-        ("Q", "Queenstown"),
-        ("S", "Southampton"),
+        ("Embarked_C", "Cherbourg"),
+        ("Embarked_Q", "Queenstown"),
+        ("Embarked_S", "Southampton"),
     ]
 
     passenger_class = forms.TypedChoiceField(
