@@ -23,6 +23,21 @@ class PredictionForm(forms.Form):
         ("Embarked_S", "Southampton"),
     ]
 
+    TITLE_CHOICES = [
+        ("", "Select Title"),
+        (0, "Mr"),
+        (1, "Miss"),
+        (2, "Mrs"),
+        (3, "Master"),
+        (4, "Others"),
+    ]
+
+    title = forms.TypedChoiceField(
+        choices=TITLE_CHOICES,
+        coerce=int,
+        widget=forms.Select(attrs={"class": "form-control placeholder-select"}),
+    )
+
     passenger_class = forms.TypedChoiceField(
         choices=PASSENGER_CLASS_CHOICES,
         coerce=int,
