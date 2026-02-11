@@ -24,10 +24,6 @@ def prediction_form(request):
         if prediction_form.is_valid():
             input_data = prediction_form.cleaned_data
 
-            # TODO: Replace with actual model output
-            #prediction_result = False
-            #prediction_probability = 0.0000
-
             prediction_result = prediction(input_data)[0]
             prediction_probability = prediction(input_data)[1]
 
