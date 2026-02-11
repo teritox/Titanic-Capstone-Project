@@ -17,7 +17,7 @@ with open(MODEL_PATH, "rb") as f:
 # Convert input data from prediction form into model data form
 
 def preprocess_data(input_data):
-    pclass = input_data["passerger_class"]
+    pclass = input_data["passenger_class"]
     sex = input_data["gender"]
     age = float(input_data["age"])
     fare = input_data["ticket_fare"]
