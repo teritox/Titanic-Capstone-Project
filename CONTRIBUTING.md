@@ -28,6 +28,23 @@ git config --global user.name "Your Full Name"
 git config --global user.email "your-email@example.com"
 ```
 
+Run project setup once after cloning:
+
+```
+./scripts/setup.sh
+```
+
+This command updates the Conda environment, installs Git hooks (`pre-commit`), and runs pre-commit in a fix-then-verify flow (including `black` formatting and notebook cleanup).
+
+If pre-commit changes files during `git commit`, run:
+
+```
+git add -A
+git commit -m "Your message"
+```
+
+The second commit attempt will pass with the cleaned notebook files.
+
 ---
 
 ## Daily workflow
@@ -145,5 +162,6 @@ Only merge to `main` at agreed milestones (demos, checkpoints, final submission)
 * Always pull and merge the latest changes from `development` before pushing.
 * Never rebase `development` or `main`.
 * If `git pull --ff-only` fails, stop and ask for help before proceeding.
+* Keep Jupyter notebook outputs out of commits (pre-commit handles this automatically after setup).
 
 Following these rules keeps the history clear, avoids unnecessary conflicts, and ensures contributions are easy to review.
