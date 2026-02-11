@@ -35,10 +35,70 @@ Download the Titanic dataset at [Titanic]( https://www.kaggle.com/c/titanic/data
 
 Go back to [Contents](#contents).
 ## Description of the machine learning models
-model description
+
+ 
+
+
 
 Go back to [Contents](#contents).
-## Overview of the system architecture
-overviews
+## Overview of the System Architecture
+
+### 1. Data Preprocessing
+#### 1️⃣ Handling Missing Values
+#### Age
+Instead of using a global average, missing **Age** values were imputed using **title-based grouping**:
+
+- **Title Extraction:** Extracted from the `Name` column.
+
+  Example:
+  - `"Braund, Mr. Owen Harris" → Mr`
+  - `"Cumings, Mrs. John Bradley" → Mrs`
+- **Title Grouping:** 
+  
+  A new feature called **Title** by extracting it from **Name** column and grouping titles into **Mr, Mrs, Miss, Master** and **Rare** categories. Missing **Age** values(NaN) are then replaced with the mean age within each title group.
+
+- **Age Imputation:** 
+  
+  Missing `Age` values were filled with the **mean age** of the corresponding title group.  
+
+#### Embarked
+This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with **C**
+
+#### 2️⃣ Encoding Categorical Variables
+  - **Sex:**
+    - `male → 0`
+    - `female → 1`
+  - **Embarked(C/Q/S):**
+    - `Embarked_C`
+    - `Embarked_Q`
+    - `Embarked_S`
+    - One-hot encoding was used to prevent the model from assuming any ordinal relationship between embarkation ports.
+  - **Title:**
+    - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare**.
+    - Titles extracted from `Name` were also encoded:
+      ```text
+      Mr → 0  
+      Mrs → 1  
+      Miss → 2  
+      Master → 3  
+      Rare → 4
+    - This allows the model to learn the survival patterns realated to social status and age groups.
+
+#### 3️⃣ Feature Engineering 
+- **FamilySize:**
+  A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
+
+- **Age Bin:** 
+
+### 2. Model Training
+- Describe the model selection (why Logistic Regression or Random Forest)  
+- Explain how you split train/test  
+- Discuss evaluation metrics (accuracy, confusion matrix, ROC curve, etc.)  
+
+### 3. Django Integration
+- Explain how the model is loaded  
+- Show form design and validation  
+- Explain preprocessing applied to user input  
+- Describe how predictions are displayed 
 
 Go back to [Contents](#contents).

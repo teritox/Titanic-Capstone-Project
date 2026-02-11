@@ -1,31 +1,43 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from .models import Prediction
 from . import forms
 
-# Create your views here.
 
 def home(request):
-    return render(request, 'predictor/home.html')
+    return render(request, "predictor/home.html")
 
 
 def history(request):
     predictions = []
-    return render(request, 'predictor/history.html', {'predictions': predictions})
+    return render(request, "predictor/history.html", {"predictions": predictions})
 
 
 def result(request):
-    return render(request, 'predictor/result.html')
+    return render(request, "predictor/result.html")
 
 
 def prediction_form(request):
-    prediction_form = forms.PredictionForm()
+    if request.method == "POST":
+        prediction_form = forms.PredictionForm(request.POST)
 
-    if request.method == 'POST':
-        form = forms.PredictionForm(request.POST)
+        if prediction_form.is_valid():
+            input_data = prediction_form.cleaned_data
 
-        #If form is valid
-            #Add to database
-            #return to result page
+            # TODO: Replace with actual model output
+            prediction_result = False
+            prediction_probability = 0.0000
 
+            Prediction.objects.create(
+                input_data=input_data,
+                prediction_result=prediction_result,
+                prediction_probability=prediction_probability,
+            )
 
+            return redirect("result")
 
-    return render(request, 'predictor/prediction_form.html', {'prediction_form': prediction_form})
+    else:
+        prediction_form = forms.PredictionForm()
+
+    return render(
+        request, "predictor/prediction_form.html", {"prediction_form": prediction_form}
+    )
