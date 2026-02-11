@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from .models import Prediction
 from . import forms
+from .ml_model import prediction
 
 
 def home(request):
@@ -24,8 +25,11 @@ def prediction_form(request):
             input_data = prediction_form.cleaned_data
 
             # TODO: Replace with actual model output
-            prediction_result = False
-            prediction_probability = 0.0000
+            #prediction_result = False
+            #prediction_probability = 0.0000
+
+            prediction_result = prediction(input_data)[0]
+            prediction_probability = prediction(input_data)[1]
 
             Prediction.objects.create(
                 input_data=input_data,
