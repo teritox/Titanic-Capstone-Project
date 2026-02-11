@@ -1,6 +1,7 @@
 import os
 import pickle
-import numpy
+import numpy as np
+import pandas as pd
 
 # Get path for the folder
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,3 +14,35 @@ print(MODEL_PATH)
 with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
 
+# Convert input data from prediction form into model data form
+
+def preprocess_data(input_data):
+    pclass = input_data["passerger_class"]
+    sex = input_data["gender"]
+    age = float(input_data["age"])
+    fare = input_data["ticket_fare"]
+    family_size = input_data["siblings_or_spouses"] + input_data["parch"] + 1
+    embarked = input_data["embark"]
+    
+    title_map = {"Mr": 0, "Mrs": 1, "Miss": 2, "Master": 3, "Rare": 4}
+    title = title_map.get(input_data["title"], 4)
+    
+    # add ALL columns exactly as training
+    # Right now we have only 3 features in our modeldef preprocess_data(input_data):
+    data = {
+        "Pclass": pclass,
+        "Sex": sex,
+        #"Age": age,
+        #"Fare": fare,
+        "FamilySize": family_size,
+        #"Title": title   
+    }
+
+    # The dataset is Dataframe in our training model, so important to convert to df form
+    df = pd.DataFrame([data])
+    return df 
+
+
+def prediction(input_data):
+    X = preprocess_data(input_data)
+  
