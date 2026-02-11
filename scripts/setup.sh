@@ -14,6 +14,9 @@ cd "$ROOT_DIR"
 echo "Updating Conda environment: $ENV_NAME"
 conda env update -f environment.yml
 
+echo "Installing project package in editable mode"
+conda run -n "$ENV_NAME" python -m pip install -e .
+
 echo "Installing git hooks with pre-commit"
 conda run -n "$ENV_NAME" pre-commit install --install-hooks
 
