@@ -10,6 +10,7 @@ class Prediction(models.Model):
         prediction_probability: Probability of the predicted outcome.
         timestamp: When the prediction was made.
     """
+
     input_data = models.JSONField()
     prediction_result = models.BooleanField()
     prediction_probability = models.DecimalField(max_digits=5, decimal_places=4)
