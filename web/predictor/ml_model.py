@@ -24,7 +24,7 @@ def preprocess_data(input_data):
     family_size = input_data["siblings_or_spouses"] + input_data["parch"] + 1
     embarked = input_data["embark"]
     
-    #title_map = {"Mr": 0, "Mrs": 1, "Miss": 2, "Master": 3, "Rare": 4}
+    #title_map = {"Mr": 0, "Mrs": 1, "Miss": 2, "Master": 3, "Other": 4}
     #title = title_map.get(input_data["title"], 4)
     
     # add ALL columns exactly as training
@@ -32,10 +32,11 @@ def preprocess_data(input_data):
     data = {
         "Sex": sex,
         "Pclass": pclass,
-        #"Age": age,
-        #"Fare": fare,
+        "Age": age,
+        "Fare": fare,
+        "Title": 1,  # TODO change to title after we added the title in prediction form
         "FamilySize": family_size,
-        #"Title": title   
+         
     }
 
     # The dataset is Dataframe in our training model, so important to convert to df form
