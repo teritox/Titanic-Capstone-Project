@@ -7,6 +7,7 @@ channels:
 dependencies:
   - python=3.14
   - pip
+  - setuptools
   - django=6
   - pillow
   - psycopg2
