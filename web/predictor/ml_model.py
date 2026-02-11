@@ -30,8 +30,8 @@ def preprocess_data(input_data):
     # add ALL columns exactly as training
     # Right now we have only 3 features in our modeldef preprocess_data(input_data):
     data = {
-        "Pclass": pclass,
         "Sex": sex,
+        "Pclass": pclass,
         #"Age": age,
         #"Fare": fare,
         "FamilySize": family_size,
@@ -45,7 +45,7 @@ def preprocess_data(input_data):
 
 def prediction(input_data):
     X = preprocess_data(input_data)
-      
+    print(X)  
     prediction_result = model.predict(X)[0]
     probability = model.predict_proba(X)[0][1]
     print(prediction_result, probability)
