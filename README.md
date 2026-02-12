@@ -1,6 +1,6 @@
-# Titanic-Capstone-Project-
+# Titanic-Capstone-Project
 
-Python AI / ML student project. Capstone project built on machine learning systen based on real-world data and deployed as a django web application.
+Python AI / ML student project. Capstone project built on machine learning system based on real-world data and deployed as a django web application.
 
 
 ## Contents
