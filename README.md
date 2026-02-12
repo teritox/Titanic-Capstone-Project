@@ -102,17 +102,18 @@ This feature contains only two missing values, which are unlikely to affect the 
 
 ### 2. Model Training
 - **Model Selection**
-  - **Baseline Model: Logistic Regression**
+  - **Baseline Model: Logistic Regression**  
     We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
-  - **Candidate Model 1: [Model Name]**  
-    Why it may improve on baseline (e.g., nonlinearity, interactions).
-  - **Candidate Model 2: [Model Name]**  
-    Same format for consistency.
-  - **Model Comparison Criteria**  
-    Metrics used (e.g., accuracy, precision, recall, F1, ROC-AUC), validation approach, and final selection rule.
+  - **Candidate Model 1: Random Forest**  
+    *TODO: Why it may improve on baseline (e.g., nonlinearity, interactions).*
+  - **Candidate Model 2: XGBoost**  
+    *TODO*
 
-- Explain how you split train/test  
-- Discuss evaluation metrics (accuracy, confusion matrix, ROC curve, etc.)  
+- **Validation Strategy**  
+  We split data with `test_size=0.1` (90% train / 10% test). *TODO: Model tuning is performed with cross-validation on the training set only. The test set is used once for final evaluation.*
+
+- **Evaluation Metrics**  
+  *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.*  
 
 ### 3. Django Integration
 - Explain how the model is loaded  
