@@ -37,8 +37,10 @@ def preprocess_data(input_data):
     # Convert embarked input to One Hot encoded Embarked Features
     embarked_bins = ["Embarked_C", "Embarked_Q", "Embarked_S"]
     embarked_dict = {e: int(input_data["embarked"] == e) for e in embarked_bins}
-    #title_map = {"Mr": 0, "Mrs": 1, "Miss": 2, "Master": 3, "Other": 4}
-    #title = title_map.get(input_data["title"], 4)
+    
+    #Convert Title input to One Hot encoded Title Features
+    title_bin = ["Master", "Miss","Mrs","Mr","Rare"]
+    title_dict = {f"Title_{t}": int(input_data["title"] == t) for t in title_bin}
     
     # Order of the features in our model as following
     # "Sex","Pclass","Fare","FamilySize",
@@ -52,10 +54,9 @@ def preprocess_data(input_data):
         "FamilySize": input_data["siblings_or_spouses"] + input_data["parch"] + 1,
         **agebin_dict,
         **embarked_dict,
-        "Title": 1,  # TODO change to title after we added the title in prediction form
-        
-        
-         
+        **title_dict,
+        #"Title": 1,  # TODO change to title after we added the title in prediction form
+              
     }
 
     # The dataset is Dataframe in our training model, so important to convert to df form
