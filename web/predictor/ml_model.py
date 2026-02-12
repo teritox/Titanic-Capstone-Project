@@ -42,11 +42,13 @@ def preprocess_data(input_data):
     title_bin = ["Master", "Miss","Mrs","Mr","Rare"]
     title_dict = {f"Title_{t}": int(input_data["title"] == t) for t in title_bin}
     
-    # Order of the features in our model as following
-    # "Sex","Pclass","Fare","FamilySize",
-    # "AgeBin_Child","AgeBin_Teen","AgeBin_Adult", "AgeBin_Middle Aged","AgeBin_Senior",
-    # "Embarked_C","Embarked_Q","Embarked_S",
-    # "Title_Master", "Title_Miss","Title_Mrs","Title_Mr","Title_Rare",
+    '''
+    Order of the features in our model as following:
+        "Sex","Pclass","Fare","FamilySize",
+        "AgeBin_Child","AgeBin_Teen","AgeBin_Adult", "AgeBin_Middle Aged","AgeBin_Senior",
+        "Embarked_C","Embarked_Q","Embarked_S",
+        "Title_Master", "Title_Miss","Title_Mrs","Title_Mr","Title_Rare",
+    '''
     data = {
         "Sex": input_data["gender"],
         "Pclass": input_data["passenger_class"],
