@@ -17,7 +17,8 @@ with open(MODEL_PATH, "rb") as f:
 # Convert input data from prediction form into model data form
 
 def preprocess_data(input_data):
- 
+
+    # Convert age input to One Hot encoded AgeBin Features
     age = input_data["age"]
     if age <=12:
         age_bin = "Child"
@@ -32,15 +33,14 @@ def preprocess_data(input_data):
 
     age_bins = ["Child", "Teen","Adult","Middel Aged", "Senior"]
     agebin_dict = {f"AgeBin_{a}": int(age_bin == a) for a in age_bins}
-
-    family_size = input_data["siblings_or_spouses"] + input_data["parch"] + 1
-    embarked = input_data["embark"]
     
+    # Convert embarked input to One Hot encoded Embarked Features
+    embarked_bins = ["Embarked_C", "Embarked_Q", "Embarked_S"]
+    embarked_dict = {e: int(input_data["embarked"] == e) for e in embarked_bins}
     #title_map = {"Mr": 0, "Mrs": 1, "Miss": 2, "Master": 3, "Other": 4}
     #title = title_map.get(input_data["title"], 4)
     
-    # add ALL columns exactly as training
-    # order of the features in our model
+    # Order of the features in our model as following
     # "Sex","Pclass","Fare","FamilySize",
     # "AgeBin_Child","AgeBin_Teen","AgeBin_Adult", "AgeBin_Middle Aged","AgeBin_Senior",
     # "Embarked_C","Embarked_Q","Embarked_S",
@@ -49,8 +49,9 @@ def preprocess_data(input_data):
         "Sex": input_data["gender"],
         "Pclass": input_data["passenger_class"],
         "Fare": input_data["ticket_fare"],
-        "FamilySize": family_size,
+        "FamilySize": input_data["siblings_or_spouses"] + input_data["parch"] + 1,
         **agebin_dict,
+        **embarked_dict,
         "Title": 1,  # TODO change to title after we added the title in prediction form
         
         
