@@ -101,7 +101,16 @@ This feature contains only two missing values, which are unlikely to affect the 
   - **Senior:** 60+ years
 
 ### 2. Model Training
-- Describe the model selection (why Logistic Regression or Random Forest)  
+- **Model Selection**
+  - **Baseline Model: Logistic Regression**
+    We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
+  - **Candidate Model 1: [Model Name]**  
+    Why it may improve on baseline (e.g., nonlinearity, interactions).
+  - **Candidate Model 2: [Model Name]**  
+    Same format for consistency.
+  - **Model Comparison Criteria**  
+    Metrics used (e.g., accuracy, precision, recall, F1, ROC-AUC), validation approach, and final selection rule.
+
 - Explain how you split train/test  
 - Discuss evaluation metrics (accuracy, confusion matrix, ROC curve, etc.)  
 
