@@ -3,6 +3,15 @@ from django import forms
 
 class PredictionForm(forms.Form):
 
+    TITLE_CHOICES = [
+        ("", "Select Title"),
+        ("Master", "Master"),
+        ("Miss", "Miss"),
+        ("Mrs", "Mrs"),
+        ("Mr", "Mr"),
+        ("Rare", "Other"),
+    ]
+
     PASSENGER_CLASS_CHOICES = [
         ("", "Select Passenger Class"),
         (1, "1st Class"),
@@ -22,6 +31,12 @@ class PredictionForm(forms.Form):
         ("Embarked_Q", "Queenstown"),
         ("Embarked_S", "Southampton"),
     ]
+
+    title = forms.TypedChoiceField(
+        choices=TITLE_CHOICES,
+        coerce=str,
+        widget=forms.Select(attrs={"class": "form-control placeholder-select"}),
+    )
 
     passenger_class = forms.TypedChoiceField(
         choices=PASSENGER_CLASS_CHOICES,
