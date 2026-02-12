@@ -1,6 +1,6 @@
 # Titanic-Capstone-Project
 
-Python AI / ML student project. Capstone project built on machine learning system based on real-world data and deployed as a django web application.
+Python AI / ML student project. Capstone project built on machine learning system based on real-world data and deployed as a Django web application.
 
 
 ## Contents
@@ -89,6 +89,13 @@ This feature contains only two missing values, which are unlikely to affect the 
   A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
 
 - **Age Bin:** 
+  The age feature is grouped into categorical age ranges to reduce noise and capture life-stage patterns that may influence survival. The bins are defined as:
+  
+  - **Child:** 0-12 years
+  - **Teen:** 13-19 years
+  - **Adult:** 20-39 years
+  - **Middle Aged:** 40-59 years
+  - **Senior:** 60+ years
 
 ### 2. Model Training
 - Describe the model selection (why Logistic Regression or Random Forest)  
