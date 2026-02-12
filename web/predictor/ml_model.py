@@ -27,16 +27,16 @@ def preprocess_data(input_data):
     elif 19< age <= 39:
         age_bin = "Adult"
     elif 39< age <= 59:
-        age_bin = "Middel Aged"
+        age_bin = "Middle Aged"
     else:
         age_bin = "Senior"
 
-    age_bins = ["Child", "Teen","Adult","Middel Aged", "Senior"]
+    age_bins = ["Child", "Teen","Adult","Middle Aged", "Senior"]
     agebin_dict = {f"AgeBin_{a}": int(age_bin == a) for a in age_bins}
     
     # Convert embarked input to One Hot encoded Embarked Features
     embarked_bins = ["Embarked_C", "Embarked_Q", "Embarked_S"]
-    embarked_dict = {e: int(input_data["embarked"] == e) for e in embarked_bins}
+    embarked_dict = {e: int(input_data["embark"] == e) for e in embarked_bins}
     
     #Convert Title input to One Hot encoded Title Features
     title_bin = ["Master", "Miss","Mrs","Mr","Rare"]
@@ -49,6 +49,7 @@ def preprocess_data(input_data):
         "Embarked_C","Embarked_Q","Embarked_S",
         "Title_Master", "Title_Miss","Title_Mrs","Title_Mr","Title_Rare",
     '''
+
     data = {
         "Sex": input_data["gender"],
         "Pclass": input_data["passenger_class"],
@@ -57,7 +58,6 @@ def preprocess_data(input_data):
         **agebin_dict,
         **embarked_dict,
         **title_dict,
-        #"Title": 1,  # TODO change to title after we added the title in prediction form
               
     }
 
