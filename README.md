@@ -113,7 +113,28 @@ This feature contains only two missing values, which are unlikely to affect the 
   We split data with `test_size=0.1` (90% train / 10% test). *TODO: Model tuning is performed with cross-validation on the training set only. The test set is used once for final evaluation.*
 
 - **Evaluation Metrics**  
-  *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.*  
+
+  The Titanic Dataset is slightly imbalanced as shown below:
+
+  | Class               | Count | Percentage |
+  | ------------------- | ----- | ---------- |
+  | 0 (Not survived) | 549   | ~62%       |
+  | 1 (Survived)        | 342   | ~38%       |
+  
+  With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class). 
+  And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
+  - **Logistic Model Overall Performance **
+  
+    Mean F1-score = 0.7566
+    | Class                   | Precision | Recall | F1-Score | Support |
+    | ----------------------- | --------- | ------ | -------- | ------- |
+    | **0 – Not Survive** | ✔0.87      | ✔0.80   | ✔0.83     | 105     |
+    | **1 – Survived**        | •0.74      | ✔0.82   | •**0.78**     | 74      |
+    | **Accuracy**            |           |        | ✔**0.81** | 179     |
+    | **Macro Avg**           | 0.80      | 0.81   | 0.81     | 179     |
+    | **Weighted Avg**        | 0.82      | 0.81   | 0.81     | 179     |
+
+  - **Random Forest** 
 
   - **Confusion Matrix**  
   The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
