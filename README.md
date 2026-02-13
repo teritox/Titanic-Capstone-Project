@@ -139,6 +139,7 @@ This feature contains only two missing values, which are unlikely to affect the 
   - **Confusion Matrix**  
   The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
 
+    ![confusion matrix](web/static/images/confusion_matrix.jpg) 
 
 ### 3. Django Integration
 - Explain how the model is loaded  
