@@ -139,38 +139,6 @@ Only merge to `main` at agreed milestones (demos, checkpoints, final submission)
 
 ---
 
-## Stable checkpoint process (daily)
-
-At the end of each day, move `stable` to the latest validated `development` commit and create an immutable daily tag.
-
-1. Fetch latest remote changes.
-2. Fast-forward `stable` to `origin/development`.
-3. Push `stable`.
-4. Create and push a daily tag on that same commit.
-
-```
-git fetch origin
-git switch stable
-git merge --ff-only origin/development
-git push origin stable
-git tag -a stable-YYYY-MM-DD -m "Stable checkpoint for YYYY-MM-DD"
-git push origin stable-YYYY-MM-DD
-```
-
-If a second checkpoint is needed the same day, use:
-
-```
-git tag -a stable-YYYY-MM-DD.2 -m "Stable checkpoint for YYYY-MM-DD #2"
-git push origin stable-YYYY-MM-DD.2
-```
-
-Rules:
-
-* Never commit directly to `stable`.
-* Never force-move a daily tag. Create a new tag instead.
-
----
-
 ## Hard rules
 
 * Always run `git pull --ff-only` before starting work
