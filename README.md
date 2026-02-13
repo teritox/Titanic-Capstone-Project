@@ -83,21 +83,24 @@ One-hot encoding was used to prevent the model from assuming any ordinal relatio
       - `Title_Mrs: 0/1`
       - `Title_Mr: 0/1`
       - `Title_Rare: 0/1`
-    - This allows the model to learn the survival patterns realated to social status and age groups.
+    - Each title category is converted into a binary (0/1) column.This allows logistic regression to learn survival patterns related to:
+      - Gender (Mr vs Mrs vs Miss)
+      - Age group (Master = young boys)
+      - Social status (Rare titles)
   
-  Example:
-  
-  Before One-hot encoding
-  | PassengerId | Title  |
-| ----------- | ------ |
-| 1           | Mr     |
-| 2           | Mrs    |
-After One-hot encoding
+  - **Example:**
 
-  | PassengerId | Title_Master | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
-| ----------- | ------------ | ---------- | --------- | -------- | ---------- |
-| 1           | 0            | 0          | 0         | 1        | 0          |
-| 2           | 0            | 0          | 1         | 0        | 0          |
+    Table 1: Original Title Feature Before One-Hot Encoding
+    | PassengerId | Title  |
+    | ----------- | ------ |
+    | 1           | Mr     |
+    | 2           | Mrs    |
+
+    Table 2: Title Features After One-Hot Encoding
+    | PassengerId | Title_Master | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
+    | ----------- | ------------ | ---------- | --------- | -------- | ---------- |
+    | 1           | 0            | 0          | 0         | 1        | 0          |
+    | 2           | 0            | 0          | 1         | 0        | 0          |
 
 
 
