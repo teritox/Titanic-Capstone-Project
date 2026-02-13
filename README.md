@@ -144,7 +144,12 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
     - Traning dataset = 713 rows → enough to train logistic regression
     - Test dataset = 178 rows →enough to get stable f1 scores
 
-    We use **K-Fold Cross-Valiation**
+    We use **Stratified K-Fold Cross-Valiation** : 
+    
+    Split training data into k folds; train on k-1 folds and validate on the remaining fold; repeat k times and keep the class distribution in each fold.
+    ```python
+    cv = StratifiedKFold(n_splits=5, shuffle=True,random_state=42)
+    f1_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='f1')
 
   - **Evaluation Metrics**  
     *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.* 
