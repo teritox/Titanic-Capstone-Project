@@ -124,9 +124,14 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
 
 
 ### 2. Model Training
-- Describe the model selection (why Logistic Regression or Random Forest)  
-- Explain how you split train/test  
-- Discuss evaluation metrics (accuracy, confusion matrix, ROC curve, etc.)  
+#### 1️⃣ Describe the model selection (why Logistic Regression or Random Forest) 
+  -  
+#### 2️⃣ Train/Test Datasets  
+  The Titanic dataset has 891 data(rows) which is a small dataset. We use 0.2 to split:
+    - Traning dataset = 713 rows → enough to train logistic regression
+    - Test dataset = 178 rows enough to get stable f1 scores
+#### 3️⃣ Discuss evaluation metrics
+  -   
 
 ### 3. Django Integration
 - Explain how the model is loaded  
