@@ -71,7 +71,7 @@ This feature contains only two missing values, which are unlikely to affect the 
 - **CabinDeck:**
   `CabinDeck` is extracted from cabin numbers, yielding values `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`. Survival was significantly lower for passengers with `Unknown` deck, while decks `B`, `D`, and `E` showed the highest survival rates.
 
-- **Age Bin:** 
+- **AgeBin:** 
   The age feature is grouped into categorical age ranges to reduce noise and capture life-stage patterns that may influence survival. The bins are defined as:
   
   - **Child:** 0-12 years
@@ -126,30 +126,33 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
 
 
 
-### 2. Model Training
+### 2. Model Training and Evaluation
 #### 1️⃣ Describe the model selection (why Logistic Regression or Random Forest) 
-  -  
-#### 2️⃣ Train/Test Datasets  
-  The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance. 
-  
-  Therefore, we chose a 0.2 test split for train_test_split, balancing enough training data with a sufficiently large test set for stable evaluation.
-  - Traning dataset = 713 rows → enough to train logistic regression
-  - Test dataset = 178 rows →enough to get stable f1 scores
-#### 3️⃣ Discuss evaluation metrics
-  -   
-- **Model Selection**
   - **Baseline Model: Logistic Regression**  
     We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
   - **Candidate Model 1: Random Forest**  
     *TODO: Why it may improve on baseline (e.g., nonlinearity, interactions).*
   - **Candidate Model 2: XGBoost**  
     *TODO*
+#### 2️⃣ Validation Strategy
 
-- **Validation Strategy**  
-  We split data with `test_size=0.1` (90% train / 10% test). *TODO: Model tuning is performed with cross-validation on the training set only. The test set is used once for final evaluation.*
+  - **Train,Test and Validation Datasets** 
 
-- **Evaluation Metrics**  
-  *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.*  
+    The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance. 
+    
+    Therefore, We split data with `test_size=0.2` (80% train / 20% test)., balancing enough training data with a sufficiently large test set for stable evaluation.
+    - Traning dataset = 713 rows → enough to train logistic regression
+    - Test dataset = 178 rows →enough to get stable f1 scores
+
+    We use **K-Fold Cross-Valiation**
+
+  - **Evaluation Metrics**  
+    *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.* 
+#### 3️⃣ 
+
+
+
+  
 
 ### 3. Django Integration
 - Explain how the model is loaded  
