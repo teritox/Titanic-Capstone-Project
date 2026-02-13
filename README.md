@@ -59,10 +59,10 @@ Instead of using a global average, missing **Age** values were imputed using **t
 
 - **Age Imputation:** 
   
-  Missing `Age` values were filled with the **mean age** of the corresponding title group.  
+  Missing **Age** values were filled with the **mean age** of the corresponding title group.  
 
 #### Embarked
-This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with **C**
+This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with letter **C**
 
 #### 2️⃣ Feature Engineering 
 - **FamilySize:**
