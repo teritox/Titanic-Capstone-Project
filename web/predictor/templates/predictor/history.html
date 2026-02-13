@@ -3,54 +3,98 @@
 {% block body_block %}
 
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Prediction History</h1>
-    
-    {% if predictions %}
-    <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Class</th>
-                    <th>Title</th>
-                    <th>Gender</th>
-                    <th>Age</th>
-                    <th>Siblings/Spouses</th>
-                    <th>Parch</th>
-                    <th>Ticket Fare ($)</th>
-                    <th>Embark</th>
-                    <th>Prediction</th>
-                    <th>Probability</th>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for passenger in predictions %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ passenger.passenger_class_label }}</td>
-                    <td>{{ passenger.input_data.title }}</td>
-                    <td>{{ passenger.gender_label }}</td>
-                    <td>{{ passenger.input_data.age }}</td>
-                    <td>{{ passenger.input_data.siblings_or_spouses }}</td>
-                    <td>{{ passenger.input_data.parch }}</td>
-                    <td>{{ passenger.input_data.ticket_fare|floatformat:2 }}</td>
-                    <td>{{ passenger.embark_label }}</td>
-                    <td>
-                        <span class="fw-bold text-white px-2 py-1 rounded {% if passenger.prediction_result %}bg-success{% else %}bg-danger{% endif %}">
-                          {% if passenger.prediction_result %}Survived{% else %}Did Not Survive{% endif %}
-                        </span>
-                    </td>
-                    <td>{{ passenger.prediction_probability|floatformat:2 }}</td>
-                    <td>{{ passenger.timestamp|date:"Y-m-d H:i:s" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+
+            <h2 class="text-center mb-4 fw-bold">Prediction History</h2>
+
+            {% if predictions %}
+
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    <strong>Total Predictions:</strong> {{ predictions|length }}
+                </div>
+                <div class="text-muted">
+                    Latest First
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center">
+                    <thead class="table-dark text-uppercase small">
+                        <tr>
+                            <th>#</th>
+                            <th>Class</th>
+                            <th>Title</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Siblings</th>
+                            <th>Parch</th>
+                            <th>Fare ($)</th>
+                            <th>Embark</th>
+                            <th>Prediction</th>
+                            <th>Probability</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for passenger in predictions %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ passenger.passenger_class_label }}</td>
+                            <td>{{ passenger.input_data.title }}</td>
+                            <td>{{ passenger.gender_label }}</td>
+                            <td>{{ passenger.input_data.age }}</td>
+                            <td>{{ passenger.input_data.siblings_or_spouses }}</td>
+                            <td>{{ passenger.input_data.parch }}</td>
+                            <td>{{ passenger.input_data.ticket_fare|floatformat:2 }}</td>
+                            <td>{{ passenger.embark_label }}</td>
+
+                            <td>
+                                <span class="badge fs-6 px-3 py-2 
+                                    {% if passenger.prediction_result %}
+                                        bg-success
+                                    {% else %}
+                                        bg-danger
+                                    {% endif %}
+                                ">
+                                    {% if passenger.prediction_result %}
+                                        Survived
+                                    {% else %}
+                                        Did Not Survive
+                                    {% endif %}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="fw-bold 
+                                    {% if passenger.probability_percent >= 70 %}
+                                        text-success
+                                    {% elif passenger.probability_percent >= 40 %}
+                                        text-warning
+                                    {% else %}
+                                        text-danger
+                                    {% endif %}
+                                ">
+                                    {{ passenger.probability_percent }}%
+                                </span>
+                            </td>
+
+                            <td>{{ passenger.timestamp|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% else %}
+                <div class="alert alert-info text-center">
+                    No predictions yet.
+                </div>
+            {% endif %}
+
+        </div>
     </div>
-    {% else %}
-    <div class="alert alert-info">No predictions yet.</div>
-    {% endif %}
 </div>
 
 {% endblock %}
