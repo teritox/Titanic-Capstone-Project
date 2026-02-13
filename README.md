@@ -150,14 +150,7 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
     cv = StratifiedKFold(n_splits=5, shuffle=True,random_state=42)
     f1_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='f1')
 
-  - **Evaluation Metrics**  
-    *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.* 
-#### 3️⃣ 
-
-
-
-  
-- **Evaluation Metrics**  
+#### 3️⃣ Evaluation Metrics  
 
   The Titanic Dataset is slightly imbalanced as shown below:
 
