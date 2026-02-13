@@ -65,24 +65,41 @@ Instead of using a global average, missing **Age** values were imputed using **t
 This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with **C**
 
 #### 2️⃣ Encoding Categorical Variables
+One-hot encoding was used to prevent the model from assuming any ordinal relationship.
+
   - **Sex:**
     - `male → 0`
     - `female → 1`
   - **Embarked(C/Q/S):**
-    - `Embarked_C`
-    - `Embarked_Q`
-    - `Embarked_S`
-    - One-hot encoding was used to prevent the model from assuming any ordinal relationship between embarkation ports.
+    - `Embarked_C: 0/1`
+    - `Embarked_Q: 0/1`
+    - `Embarked_S: 0/1`
+    
   - **Title:**
     - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare**.
     - Titles extracted from `Name` were also encoded:
-      ```text
-      Mr → 0  
-      Mrs → 1  
-      Miss → 2  
-      Master → 3  
-      Rare → 4
+      - `Title_Master: 0/1`
+      - `Title_Miss: 0/1`
+      - `Title_Mrs: 0/1`
+      - `Title_Mr: 0/1`
+      - `Title_Rare: 0/1`
     - This allows the model to learn the survival patterns realated to social status and age groups.
+  
+  Example:
+  
+  Before One-hot encoding
+  | PassengerId | Title  |
+| ----------- | ------ |
+| 1           | Mr     |
+| 2           | Mrs    |
+After One-hot encoding
+
+  | PassengerId | Title_Master | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
+| ----------- | ------------ | ---------- | --------- | -------- | ---------- |
+| 1           | 0            | 0          | 0         | 1        | 0          |
+| 2           | 0            | 0          | 1         | 0        | 0          |
+
+
 
 #### 3️⃣ Feature Engineering 
 - **FamilySize:**
