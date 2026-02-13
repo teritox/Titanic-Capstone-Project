@@ -98,8 +98,7 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
     - `AgeBin_Senior: 0/1`
     
   - **Title:**
-    - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare**.
-    - Titles extracted from `Name` were also encoded:
+    - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare** which were also encoded:
       - `Title_Master: 0/1`
       - `Title_Miss: 0/1`
       - `Title_Mrs: 0/1`
