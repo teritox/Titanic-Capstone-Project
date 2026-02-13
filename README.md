@@ -135,17 +135,17 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
     *TODO*
 #### 2️⃣ Validation Strategy
 
-  - **Train,Test and Validation Datasets** 
+  - **Train, Test and Validation Datasets** 
 
     The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance. 
     
-    Therefore, We split data with `test_size=0.2` (80% train / 20% test)., balancing enough training data with a sufficiently large test set for stable evaluation.
+    Therefore, We split data with `test_size=0.2` (80% train / 20% test), balancing enough training data with a sufficiently large test set for stable evaluation.
     - Traning dataset = 713 rows → enough to train logistic regression
     - Test dataset = 178 rows →enough to get stable f1 scores
 
     We use **Stratified K-Fold Cross-Valiation** : 
     
-    Split training data into k folds; train on k-1 folds and validate on the remaining fold; repeat k times and keep the class distribution in each fold.
+    Split training data into k folds, train on k-1 folds and validate on the remaining fold and repeat k times. The class distribution in each fold is fixed
     ```python
     cv = StratifiedKFold(n_splits=5, shuffle=True,random_state=42)
     f1_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='f1')
