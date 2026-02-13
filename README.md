@@ -123,7 +123,7 @@ This feature contains only two missing values, which are unlikely to affect the 
   
   With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class). 
   And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
-  - **Logistic Model Overall Performance **
+  - **Logistic Model Overall Performance**
   
     Mean F1-score = 0.7566
     | Class                   | Precision | Recall | F1-Score | Support |
