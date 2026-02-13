@@ -3,6 +3,9 @@ from django import forms
 
 class PredictionForm(forms.Form):
 
+    MALE = 0
+    FEMALE = 1
+
     TITLE_CHOICES = [
         ("", "Select Title"),
         ("Master", "Master"),
@@ -21,8 +24,8 @@ class PredictionForm(forms.Form):
 
     GENDER_CHOICES = [
         ("", "Select Gender"),
-        (0, "Male"),
-        (1, "Female"),
+        (MALE, "Male"),
+        (FEMALE, "Female"),
     ]
 
     EMBARK_CHOICES = [
@@ -31,6 +34,11 @@ class PredictionForm(forms.Form):
         ("Embarked_Q", "Queenstown"),
         ("Embarked_S", "Southampton"),
     ]
+
+    ALLOWED_TITLES_BY_GENDER = {
+        MALE: {"Mr", "Master", "Rare"},
+        FEMALE: {"Miss", "Mrs", "Rare"},
+    }
 
     title = forms.TypedChoiceField(
         choices=TITLE_CHOICES,
@@ -85,3 +93,18 @@ class PredictionForm(forms.Form):
             attrs={"class": "form-control", "placeholder": "Enter ticket fare"}
         ),
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        gender = cleaned_data.get("gender")
+        title = cleaned_data.get("title")
+
+        if gender is None or not title:
+            return cleaned_data
+
+        allowed_titles = self.ALLOWED_TITLES_BY_GENDER.get(gender, set())
+        if title not in allowed_titles:
+            self.add_error("title", "Selected title is not valid for the selected sex.")
+            self.add_error("gender", "Selected sex is not valid for the selected title.")
+
+        return cleaned_data
