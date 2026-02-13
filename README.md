@@ -64,8 +64,21 @@ Instead of using a global average, missing **Age** values were imputed using **t
 #### Embarked
 This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with **C**
 
-#### 2️⃣ Encoding Categorical Variables
-One-hot encoding was used to prevent the model from assuming any ordinal relationship.
+#### 2️⃣ Feature Engineering 
+- **FamilySize:**
+  A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
+
+- **AgeBin:** 
+  The age feature is grouped into categorical age ranges to reduce noise and capture life-stage patterns that may influence survival. The bins are defined as:
+  
+  - **Child:** 0-12 years
+  - **Teen:** 13-19 years
+  - **Adult:** 20-39 years
+  - **Middle Aged:** 40-59 years
+  - **Senior:** 60+ years
+
+#### 3️⃣ Encoding Categorical Variables
+One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to prevent the model from assuming any ordinal relationship.
 
   - **Sex:**
     - `male → 0`
@@ -74,6 +87,12 @@ One-hot encoding was used to prevent the model from assuming any ordinal relatio
     - `Embarked_C: 0/1`
     - `Embarked_Q: 0/1`
     - `Embarked_S: 0/1`
+  - **AgeBin:**
+    - `AgeBin_Child: 0/1`
+    - `AgeBin_Teen: 0/1`
+    - `AgeBin_Adult: 0/1`
+    - `AgeBin_Middle Aged: 0/1`
+    - `AgeBin_Senior: 0/1`
     
   - **Title:**
     - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare**.
@@ -103,19 +122,6 @@ One-hot encoding was used to prevent the model from assuming any ordinal relatio
     | 2           | 0            | 0          | 1         | 0        | 0          |
 
 
-
-#### 3️⃣ Feature Engineering 
-- **FamilySize:**
-  A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
-
-- **Age Bin:** 
-  The age feature is grouped into categorical age ranges to reduce noise and capture life-stage patterns that may influence survival. The bins are defined as:
-  
-  - **Child:** 0-12 years
-  - **Teen:** 13-19 years
-  - **Adult:** 20-39 years
-  - **Middle Aged:** 40-59 years
-  - **Senior:** 60+ years
 
 ### 2. Model Training
 - Describe the model selection (why Logistic Regression or Random Forest)  
