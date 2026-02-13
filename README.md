@@ -88,6 +88,9 @@ This feature contains only two missing values, which are unlikely to affect the 
 - **FamilySize:**
   A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
 
+- **CabinDeck:**
+  `CabinDeck` is extracted from cabin numbers, yielding values `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`. Survival was significantly lower for passengers with `Unknown` deck, while decks `B`, `D`, and `E` showed the highest survival rates.
+
 - **Age Bin:** 
   The age feature is grouped into categorical age ranges to reduce noise and capture life-stage patterns that may influence survival. The bins are defined as:
   
@@ -98,9 +101,19 @@ This feature contains only two missing values, which are unlikely to affect the 
   - **Senior:** 60+ years
 
 ### 2. Model Training
-- Describe the model selection (why Logistic Regression or Random Forest)  
-- Explain how you split train/test  
-- Discuss evaluation metrics (accuracy, confusion matrix, ROC curve, etc.)  
+- **Model Selection**
+  - **Baseline Model: Logistic Regression**  
+    We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
+  - **Candidate Model 1: Random Forest**  
+    *TODO: Why it may improve on baseline (e.g., nonlinearity, interactions).*
+  - **Candidate Model 2: XGBoost**  
+    *TODO*
+
+- **Validation Strategy**  
+  We split data with `test_size=0.1` (90% train / 10% test). *TODO: Model tuning is performed with cross-validation on the training set only. The test set is used once for final evaluation.*
+
+- **Evaluation Metrics**  
+  *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.*  
 
 ### 3. Django Integration
 - Explain how the model is loaded  
