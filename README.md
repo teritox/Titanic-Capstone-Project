@@ -59,39 +59,19 @@ Instead of using a global average, missing **Age** values were imputed using **t
 
 - **Age Imputation:** 
   
-  Missing `Age` values were filled with the **mean age** of the corresponding title group.  
+  Missing **Age** values were filled with the **mean age** of the corresponding title group.  
 
 #### Embarked
-This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with **C**
+This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with letter **C**
 
-#### 2️⃣ Encoding Categorical Variables
-  - **Sex:**
-    - `male → 0`
-    - `female → 1`
-  - **Embarked(C/Q/S):**
-    - `Embarked_C`
-    - `Embarked_Q`
-    - `Embarked_S`
-    - One-hot encoding was used to prevent the model from assuming any ordinal relationship between embarkation ports.
-  - **Title:**
-    - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare**.
-    - Titles extracted from `Name` were also encoded:
-      ```text
-      Mr → 0  
-      Mrs → 1  
-      Miss → 2  
-      Master → 3  
-      Rare → 4
-    - This allows the model to learn the survival patterns realated to social status and age groups.
-
-#### 3️⃣ Feature Engineering 
+#### 2️⃣ Feature Engineering 
 - **FamilySize:**
   A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
 
 - **CabinDeck:**
   `CabinDeck` is extracted from cabin numbers, yielding values `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`. Survival was significantly lower for passengers with `Unknown` deck, while decks `B`, `D`, and `E` showed the highest survival rates.
 
-- **Age Bin:** 
+- **AgeBin:** 
   The age feature is grouped into categorical age ranges to reduce noise and capture life-stage patterns that may influence survival. The bins are defined as:
   
   - **Child:** 0-12 years
@@ -100,18 +80,83 @@ This feature contains only two missing values, which are unlikely to affect the 
   - **Middle Aged:** 40-59 years
   - **Senior:** 60+ years
 
-### 2. Model Training
-- **Model Selection**
+#### 3️⃣ Encoding Categorical Variables
+One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to prevent the model from assuming any ordinal relationship.
+
+  - **Sex:**
+    - `male → 0`
+    - `female → 1`
+  - **Embarked(C/Q/S):**
+    - `Embarked_C: 0/1`
+    - `Embarked_Q: 0/1`
+    - `Embarked_S: 0/1`
+  - **AgeBin:**
+    - `AgeBin_Child: 0/1`
+    - `AgeBin_Teen: 0/1`
+    - `AgeBin_Adult: 0/1`
+    - `AgeBin_Middle Aged: 0/1`
+    - `AgeBin_Senior: 0/1`
+    
+  - **Title:**
+    - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare** which were also encoded:
+      - `Title_Master: 0/1`
+      - `Title_Miss: 0/1`
+      - `Title_Mrs: 0/1`
+      - `Title_Mr: 0/1`
+      - `Title_Rare: 0/1`
+    - Each title category is converted into a binary (0/1) column.This allows logistic regression to learn survival patterns related to:
+      - Gender (Mr vs Mrs vs Miss)
+      - Age group (Master = young boys)
+      - Social status (Rare titles)
+  
+  - **Example:**
+
+    Table 1: Original Title Feature Before One-Hot Encoding
+    | PassengerId | Title  |
+    | ----------- | ------ |
+    | 1           | Mr     |
+    | 2           | Mrs    |
+
+    Table 2: Title Features After One-Hot Encoding
+    | PassengerId | Title_Master | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
+    | ----------- | ------------ | ---------- | --------- | -------- | ---------- |
+    | 1           | 0            | 0          | 0         | 1        | 0          |
+    | 2           | 0            | 0          | 1         | 0        | 0          |
+
+
+
+### 2. Model Training and Evaluation
+#### 1️⃣ Describe the model selection (why Logistic Regression or Random Forest) 
   - **Baseline Model: Logistic Regression**  
     We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
   - **Candidate Model 1: Random Forest**  
     *TODO: Why it may improve on baseline (e.g., nonlinearity, interactions).*
   - **Candidate Model 2: XGBoost**  
     *TODO*
+#### 2️⃣ Validation Strategy
 
-- **Validation Strategy**  
-  We split data with `test_size=0.1` (90% train / 10% test). *TODO: Model tuning is performed with cross-validation on the training set only. The test set is used once for final evaluation.*
+  - **Train, Test and Validation Datasets** 
 
+    The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance. 
+    
+    Therefore, We split data with `test_size=0.2` (80% train / 20% test), balancing enough training data with a sufficiently large test set for stable evaluation.
+    - Traning dataset = 713 rows → enough to train logistic regression
+    - Test dataset = 178 rows →enough to get stable f1 scores
+
+    We use **Stratified K-Fold Cross-Valiation** : 
+    
+    Split training data into k folds, train on k-1 folds and validate on the remaining fold and repeat k times. The class distribution in each fold is fixed
+    ```python
+    cv = StratifiedKFold(n_splits=5, shuffle=True,random_state=42)
+    f1_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='f1')
+
+  - **Evaluation Metrics**  
+    *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.* 
+#### 3️⃣ 
+
+
+
+  
 - **Evaluation Metrics**  
 
   The Titanic Dataset is slightly imbalanced as shown below:
