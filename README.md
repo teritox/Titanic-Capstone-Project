@@ -183,7 +183,6 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
     Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
 
     **Prediction Pipeline**
-
     1. **Feature Preparation:**
       - Engineer additional features:
         - **AgeBin:** Convert `Age` into categorical age groups (e.g., Child, Adult, Senior)
@@ -194,8 +193,9 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
       - Keep numerical features `Fare`, `FamilySize` as it.
     2. **Probability Computation:**
       - Linear Weighted Sum of the Features:
-            $$z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots$$
+      $$z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots$$
       - The Predicted Probability of Survival:
+
           $$P(\text{Survived}=1) = \frac{1}{1 + e^ {- z}}$$
 
     3. **Prediction**
