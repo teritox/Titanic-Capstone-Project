@@ -124,17 +124,21 @@ This feature contains only two missing values, which are unlikely to affect the 
   - **Senior:** 60+ years
 
 #### 3️⃣ Encoding Categorical Variables
-One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to prevent the model from assuming any ordinal relationship.
+One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `Title` features to prevent the model from assuming any ordinal relationship.
 
   - **Sex:**
     - `male → 0`
     - `female → 1`
   - **Embarked(C/Q/S):**
+    - `Baseline: Embarked = S`
     - `Embarked_C: 0/1`
     - `Embarked_Q: 0/1`
-    - `Embarked_S: 0/1`
+  - **Pclass:**
+    - `Baseline: Pclass = 1`
+    - `Pclass_2: 0/1`
+    - `Pclass_3: 0/1`
   - **AgeBin:**
-    - `AgeBin_Child: 0/1`
+    - `Baseline: AgeBin = Child`
     - `AgeBin_Teen: 0/1`
     - `AgeBin_Adult: 0/1`
     - `AgeBin_Middle Aged: 0/1`
@@ -142,7 +146,7 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
     
   - **Title:**
     - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare** which were also encoded:
-      - `Title_Master: 0/1`
+      - `Baseline: Title`
       - `Title_Miss: 0/1`
       - `Title_Mrs: 0/1`
       - `Title_Mr: 0/1`
@@ -154,28 +158,39 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
   
   - **Example:**
 
-    Table 1: Original Title Feature Before One-Hot Encoding
+    Table 1: Original Title Feature Before One-Hot Encoding with `Master` as baseline
     | PassengerId | Title  |
     | ----------- | ------ |
     | 1           | Mr     |
     | 2           | Mrs    |
 
     Table 2: Title Features After One-Hot Encoding
-    | PassengerId | Title_Master | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
-    | ----------- | ------------ | ---------- | --------- | -------- | ---------- |
-    | 1           | 0            | 0          | 0         | 1        | 0          |
-    | 2           | 0            | 0          | 1         | 0        | 0          |
+    | PassengerId | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
+    | ----------- | ---------- | --------- | -------- | ---------- |
+    | 1           | 0          | 0         | 1        | 0          |
+    | 2           | 0          | 1         | 0        | 0          |
 
 
 
 ### 2. Model Training and Evaluation
-#### 1️⃣ Describe the model selection (why Logistic Regression or Random Forest) 
-  - **Baseline Model: Logistic Regression**  
-    We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
-  - **Candidate Model 1: Random Forest**  
-    *TODO: Why it may improve on baseline (e.g., nonlinearity, interactions).*
-  - **Candidate Model 2: XGBoost**  
-    *TODO*
+#### 1️⃣ Model Selection (why Logistic Regression or Random Forest) 
+  - **Problem Definition**
+    The aim is to predict whether a passenger survived the Titanic disaster. This is a binary classification task using the Titanic dataset, which contains passenger information such as age, sex, passenger class, and other relevant features.
+  - **Baseline Model: Logistic Regression (RL)**  
+    **Logistic Regression** is chosen as the baseline because tt is a simple and widely used model for binary classification tasks. It assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
+  - **Candidate Model 1: Random Forest (RF)**  
+    **Random Forest** is a supervised ensemble ML method based on multiple decision trees on random subsets of data and features. The core idea behind is that **Many decision trees-> majority votes**. 
+
+  - **Key Comparation**
+
+  | Aspect                        | Logistic Regression                                                    | Random Forest                                      |
+| ----------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------- |
+| **Categorical Features**      | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot; one-hot optional |
+| **Numeric Features**          | Can use directly depends on the situation                  | Use directly                                       |
+| **Strength** | Low computational cost compare to ensemble model like Random Forest   | Captures non-linear relationships and interactions |
+| **Limitation**       | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
+
+  
 #### 2️⃣ Validation Strategy
 
   - **Train, Test and Validation Datasets** 
@@ -193,14 +208,7 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
     cv = StratifiedKFold(n_splits=5, shuffle=True,random_state=42)
     f1_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='f1')
 
-  - **Evaluation Metrics**  
-    *TODO: We report accuracy, precision, recall, F1-score, ROC-AUC, and confusion matrix.* 
-#### 3️⃣ 
-
-
-
-  
-- **Evaluation Metrics**  
+#### 3️⃣ Evaluation Metrics  
 
   The Titanic Dataset is slightly imbalanced as shown below:
 
@@ -212,8 +220,11 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
   With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class). 
   And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
   - **Logistic Model Overall Performance**
+
+    The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
+
+    ![confusion matrix](web/static/images/confusion_matrix.jpg) 
   
-    Mean F1-score = 0.7566
     | Class                   | Precision | Recall | F1-Score | Support |
     | ----------------------- | --------- | ------ | -------- | ------- |
     | **0 – Not Survive** | ✔0.87      | ✔0.80   | ✔0.83     | 105     |
@@ -222,12 +233,11 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
     | **Macro Avg**           | 0.80      | 0.81   | 0.81     | 179     |
     | **Weighted Avg**        | 0.82      | 0.81   | 0.81     | 179     |
 
+    Cross validation gives Mean F1-score = 0.7566 which indicate that our Logistic Regression performs generally well as well.
+
   - **Random Forest** 
 
-  - **Confusion Matrix**  
-  The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
-
-    ![confusion matrix](web/static/images/confusion_matrix.jpg) 
+   
 
 ### 3. Django Integration
 - Explain how the model is loaded  
