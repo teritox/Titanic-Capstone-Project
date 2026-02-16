@@ -10,7 +10,7 @@ def home(request):
 
 
 def history(request):
-    predictions = Prediction.objects.all()
+    predictions = Prediction.objects.all().order_by("-timestamp")
 
     passenger_class_map = dict(PredictionForm.PASSENGER_CLASS_CHOICES[1:])  
     gender_map = dict(PredictionForm.GENDER_CHOICES[1:])
@@ -20,12 +20,31 @@ def history(request):
         p.passenger_class_label = passenger_class_map.get(p.input_data.get("passenger_class"), "-")
         p.gender_label = gender_map.get(p.input_data.get("gender"), "-")
         p.embark_label = embark_map.get(p.input_data.get("embark"), "-")
+        p.probability_percent = round(float(p.prediction_probability) * 100, 2)
 
     return render(request, "predictor/history.html", {"predictions": predictions})
 
 
 def result(request):
-    return render(request, "predictor/result.html")
+    prediction_id = request.session.get("prediction_id")
+
+    if not prediction_id:
+        return redirect("prediction_form")
+
+    try:
+        prediction_obj = Prediction.objects.get(id=prediction_id)
+    except Prediction.DoesNotExist:
+        return redirect("prediction_form")
+
+    return render(
+        request,
+        "predictor/result.html",
+        {
+            "survived": prediction_obj.prediction_result,
+            "prediction_probability": prediction_obj.prediction_probability * 100,
+        },
+    )
+
 
 
 def prediction_form(request):
@@ -35,14 +54,15 @@ def prediction_form(request):
         if prediction_form.is_valid():
             input_data = prediction_form.cleaned_data
 
-            prediction_result = prediction(input_data)[0]
-            prediction_probability = prediction(input_data)[1]
+            prediction_result, prediction_probability = prediction(input_data)
 
-            Prediction.objects.create(
+            prediction_obj = Prediction.objects.create(
                 input_data=input_data,
                 prediction_result=prediction_result,
                 prediction_probability=prediction_probability,
             )
+
+            request.session["prediction_id"] = prediction_obj.id
 
             return redirect("result")
 
@@ -50,5 +70,8 @@ def prediction_form(request):
         prediction_form = forms.PredictionForm()
 
     return render(
-        request, "predictor/prediction_form.html", {"prediction_form": prediction_form}
+        request,
+        "predictor/prediction_form.html",
+        {"prediction_form": prediction_form},
     )
+
