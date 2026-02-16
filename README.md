@@ -180,7 +180,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   - **Baseline Model: Logistic Regression (RL)**  
     **Why Chosen** 
     
-    Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
+    Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the target outcomes, providing a clear and interpretable reference point for comparing more complex models.
 
     **Prediction Pipeline**
     1. **Feature Preparation:**
@@ -190,7 +190,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
         - **FamilySize:** Compute total family size `SibSp` + `parch`
 
       - Encode categorical features `Sex`,`AgeBin`, `Embarked`, `Title`,`Pclass` using one-hot encoding with baseline.
-      - Keep numerical features `Fare`, `FamilySize` as it.
+      - Keep numerical features `Fare`, `FamilySize` as is.
     2. **Probability Computation:**
       - Linear Weighted Sum of the Features:
       $$z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots$$
@@ -207,7 +207,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   - **Candidate Model 1: Random Forest (RF)**  
     **Why Chosen** 
     
-    Random Forest is a supervised ensemble ML method based on multiple decision trees on random subsets of data and features. The core idea behind is that **Many decision trees-> majority votes**. This provides a clear comparison for how we handle the features and prediction pipeline using Logistic Regression model.
+  Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction, and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and prediction with the linear, weight-based approach used in Logistic Regression.
 
     **Prediction Pipeline**
 
@@ -215,7 +215,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
        - Engineer additional features:
         - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
       - Encode categorical features `Sex`,`Embarked`, `Title`,`CabinDeck` as integer labels. **Note:** one-hot encoding is **NOT** applied for the **RF** model.
-      - Keep numerical features `Fare`, `SibSP`, `parch`,`Pclass`, `Age` as it.
+      - Keep numerical features `Fare`, `SibSP`, `parch`,`Pclass`, `Age` as is.
     2. **Build Decision Trees**
       - **Bootstrap sampling** of the training data
       - Random subset of features
