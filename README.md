@@ -131,24 +131,28 @@ This feature contains only two missing values, which are unlikely to affect the 
 
 #### 3️⃣ Encoding Categorical Variables
 
-One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to prevent the model from assuming any ordinal relationship.
+One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `Title` features to prevent the model from assuming any ordinal relationship.
 
 - **Sex:**
   - `male → 0`
   - `female → 1`
 - **Embarked(C/Q/S):**
+  - `Baseline: Embarked = S`
   - `Embarked_C: 0/1`
   - `Embarked_Q: 0/1`
-  - `Embarked_S: 0/1`
+- **Pclass:**
+  - `Baseline: Pclass = 1`
+  - `Pclass_2: 0/1`
+  - `Pclass_3: 0/1`
 - **AgeBin:**
-  - `AgeBin_Child: 0/1`
+  - `Baseline: AgeBin = Child`
   - `AgeBin_Teen: 0/1`
   - `AgeBin_Adult: 0/1`
   - `AgeBin_Middle Aged: 0/1`
   - `AgeBin_Senior: 0/1`
 - **Title:**
   - Grouping titles into **Mr, Mrs, Miss, Master** and **Rare** which were also encoded:
-    - `Title_Master: 0/1`
+    - `Baseline: Title`
     - `Title_Miss: 0/1`
     - `Title_Mrs: 0/1`
     - `Title_Mr: 0/1`
@@ -160,17 +164,29 @@ One-hot encoding was used for `AgeBin`,`Embarked` and `Title` features to preven
 
 - **Example:**
 
-  Table 1: Original Title Feature Before One-Hot Encoding
+  Table 1: Original Title Feature Before One-Hot Encoding with `Master` as baseline
   | PassengerId | Title |
   | ----------- | ------ |
   | 1 | Mr |
   | 2 | Mrs |
 
   Table 2: Title Features After One-Hot Encoding
-  | PassengerId | Title_Master | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
-  | ----------- | ------------ | ---------- | --------- | -------- | ---------- |
-  | 1 | 0 | 0 | 0 | 1 | 0 |
-  | 2 | 0 | 0 | 1 | 0 | 0 |
+  | PassengerId | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
+  | ----------- | ---------- | --------- | -------- | ---------- |
+  | 1 | 0 | 0 | 1 | 0 |
+  | 2 | 0 | 1 | 0 | 0 |
+
+Table 1: Original Title Feature Before One-Hot Encoding
+| PassengerId | Title |
+| ----------- | ------ |
+| 1 | Mr |
+| 2 | Mrs |
+
+Table 2: Title Features After One-Hot Encoding
+| PassengerId | Title_Master | Title_Miss | Title_Mrs | Title_Mr | Title_Rare |
+| ----------- | ------------ | ---------- | --------- | -------- | ---------- |
+| 1 | 0 | 0 | 0 | 1 | 0 |
+| 2 | 0 | 0 | 1 | 0 | 0 |
 
 ### 2. Model Training and Evaluation
 
