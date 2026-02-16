@@ -175,9 +175,12 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
 ### 2. Model Training and Evaluation
 #### 1️⃣ Model Selection (why Logistic Regression or Random Forest) 
   - **Problem Definition**
+
     The aim is to predict whether a passenger survived the Titanic disaster. This is a binary classification task using the Titanic dataset, which contains passenger information such as age, sex, passenger class, and other relevant features.
   - **Baseline Model: Logistic Regression (RL)**  
-    **Why Chosen** is chosen as the baseline because tt is a simple and widely used model for binary classification tasks. It assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
+    **Why Chosen** 
+    
+    Logistic Regression is chosen as the baseline because tt is a simple and widely used model for binary classification tasks. It assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
 
     **Prediction Pipeline**
 
@@ -207,7 +210,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   - **Candidate Model 1: Random Forest (RF)**  
     **Why Chosen** 
     
-    RF is a supervised ensemble ML method based on multiple decision trees on random subsets of data and features. The core idea behind is that **Many decision trees-> majority votes**. This provides a clear comparison for how we handle the features and prediction pipeline using Logistic Regression model
+    Random Forest is a supervised ensemble ML method based on multiple decision trees on random subsets of data and features. The core idea behind is that **Many decision trees-> majority votes**. This provides a clear comparison for how we handle the features and prediction pipeline using Logistic Regression model.
 
     **Prediction Pipeline**
 
