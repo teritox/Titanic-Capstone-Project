@@ -194,13 +194,13 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
       - Keep numerical features `Fare`, `FamilySize` as it.
     2. **Probability Computation:**
       - Linear Weighted Sum of the Features:
-            $$
+            $
             z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots
-            $$
+            $
       - The Predicted Probability of Survival:
-          $$
+          $
           P(\text{Survived}=1) = \frac{1}{1 + e^ {- z}}
-          $$
+          $
     3. **Prediction**
 
       Assign class based on probability threshold (commonly 0.5):
