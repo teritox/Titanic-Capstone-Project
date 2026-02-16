@@ -30,8 +30,51 @@ Specifically, this project aims to:
 
 Go back to [Contents](#contents).
 
-## How to set up the file and run locally
-Download the Titanic dataset at [Titanic]( https://www.kaggle.com/c/titanic/data)
+## How to Set Up and Run Locally
+
+### Prerequisites
+- Python 3.14
+- Conda
+- pip
+- Git
+
+### Clone the repository
+```bash
+git clone https://github.com/teritox/Titanic-Capstone-Project.git
+cd Titanic-Capstone-Project
+```
+
+### Create and activate the virtual environment
+```bash
+conda env create -f environment.yml
+conda activate titanic-capstone-env # or the name specified in environment.yml
+```
+
+
+### Set up the database (first-time setup)
+This project uses Django and a SQLite database to store previous predictions.
+```bash
+python manage.py migrate
+```
+
+**If you encounter migration issues, ensure the virtual environment is activated before running Django commands.**
+
+### Run the server locally
+```bash
+python manage.py runserver
+```
+
+Then open your browser and go to: 
+http://127.0.0.1:8000/
+
+
+### Dataset source
+
+The required dataset is already included in the project.
+
+The original dataset source can be found on Kaggle: 
+https://www.kaggle.com/c/titanic/data
+
 
 Go back to [Contents](#contents).
 ## Description of the machine learning models
