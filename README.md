@@ -214,7 +214,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
     1.  **Feature Preparation:**
        - Engineer additional features:
         - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
-      - Encode categorical features `Sex`,`Embarked`, `Title`,`CabinDeck` as integer labels. **Note:** one-hot endcoding is **NOT** applied for the **RF** model.
+      - Encode categorical features `Sex`,`Embarked`, `Title`,`CabinDeck` as integer labels. **Note:** one-hot encoding is **NOT** applied for the **RF** model.
       - Keep numerical features `Fare`, `SibSP`, `parch`,`Pclass`, `Age` as it.
     2. **Build Decision Trees**
       - **Bootstrap sampling** of the training data
@@ -240,7 +240,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
     The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance. 
     
     Therefore, We split data with `test_size=0.2` (80% train / 20% test), balancing enough training data with a sufficiently large test set for stable evaluation.
-    - Traning dataset = 713 rows → enough to train logistic regression
+    - Training dataset = 713 rows → enough to train logistic regression
     - Test dataset = 178 rows →enough to get stable f1 scores
 
     We use **Stratified K-Fold Cross-Valiation** : 
