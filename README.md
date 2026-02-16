@@ -173,19 +173,21 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
 
 
 ### 2. Model Training and Evaluation
-#### 1️⃣ Describe the model selection (why Logistic Regression or Random Forest) 
-  - **Baseline Model: Logistic Regression**  
-    We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
-  - **Candidate Model 1: Random Forest (RL)**  
-    Random Forest is a supervised ML method based on multiple decision trees on random subsets of data and features. It handles non-linear realationships and interactions and is a robus choice for complex datasets like Titanic. 
+#### 1️⃣ Model Selection (why Logistic Regression or Random Forest) 
+  - **Problem Definition**
+    The aim is to predict whether a passenger survived the Titanic disaster. This is a binary classification task using the Titanic dataset, which contains passenger information such as age, sex, passenger class, and other relevant features.
+  - **Baseline Model: Logistic Regression (RL)**  
+    **Logistic Regression** is chosen as the baseline because tt is a simple and widely used model for binary classification tasks. It assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
+  - **Candidate Model 1: Random Forest (RF)**  
+    **Random Forest** is a supervised ensemble ML method based on multiple decision trees on random subsets of data and features. The core idea behind is that **Many decision trees-> majority votes**. 
 
-  - **Comparation**
+  - **Key Comparation**
 
   | Aspect                        | Logistic Regression                                                    | Random Forest                                      |
 | ----------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------- |
 | **Categorical Features**      | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot; one-hot optional |
-| **Numeric Features**          | Can use directly                   | Use directly                                       |
-| **Strength** | Coefficients = log-odds change compared to baseline                    | Captures non-linear relationships and interactions |
+| **Numeric Features**          | Can use directly depends on the situation                  | Use directly                                       |
+| **Strength** | Low computational cost compare to ensemble model like Random Forest   | Captures non-linear relationships and interactions |
 | **Limitation**       | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
 
   
