@@ -135,8 +135,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
     We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
   - **Candidate Model 1: Random Forest**  
     *TODO: Why it may improve on baseline (e.g., nonlinearity, interactions).*
-  - **Candidate Model 2: XGBoost**  
-    *TODO*
+  
 #### 2️⃣ Validation Strategy
 
   - **Train, Test and Validation Datasets** 
@@ -166,8 +165,11 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class). 
   And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
   - **Logistic Model Overall Performance**
+
+    The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
+
+    ![confusion matrix](web/static/images/confusion_matrix.jpg) 
   
-    Mean F1-score = 0.7566
     | Class                   | Precision | Recall | F1-Score | Support |
     | ----------------------- | --------- | ------ | -------- | ------- |
     | **0 – Not Survive** | ✔0.87      | ✔0.80   | ✔0.83     | 105     |
@@ -176,12 +178,11 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
     | **Macro Avg**           | 0.80      | 0.81   | 0.81     | 179     |
     | **Weighted Avg**        | 0.82      | 0.81   | 0.81     | 179     |
 
+    Cross validation gives Mean F1-score = 0.7566 which indicate that our Logistic Regression performs generally well as well.
+
   - **Random Forest** 
 
-  - **Confusion Matrix**  
-  The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
-
-    ![confusion matrix](web/static/images/confusion_matrix.jpg) 
+   
 
 ### 3. Django Integration
 - Explain how the model is loaded  
