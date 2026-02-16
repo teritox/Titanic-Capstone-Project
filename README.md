@@ -196,8 +196,6 @@ Table 2: Title Features After One-Hot Encoding
   We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
 - **Candidate Model 1: Random Forest**  
   _TODO: Why it may improve on baseline (e.g., nonlinearity, interactions)._
-- **Candidate Model 2: XGBoost**  
-  _TODO_
 
 #### 2️⃣ Validation Strategy
 
@@ -213,41 +211,30 @@ Table 2: Title Features After One-Hot Encoding
 
   Split training data into k folds, train on k-1 folds and validate on the remaining fold and repeat k times. The class distribution in each fold is fixed
 
-  ```python
-  cv = StratifiedKFold(n_splits=5, shuffle=True,random_state=42)
-  f1_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='f1')
+  | Class            | Count | Percentage |
+  | ---------------- | ----- | ---------- |
+  | 0 (Not survived) | 549   | ~62%       |
+  | 1 (Survived)     | 342   | ~38%       |
 
-  ```
+  With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class).
+  And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
+  - **Logistic Model Overall Performance**
 
-#### 3️⃣ Evaluation Metrics
+    The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
 
-The Titanic Dataset is slightly imbalanced as shown below:
+    ![confusion matrix](web/static/images/confusion_matrix.jpg)
 
-| Class            | Count | Percentage |
-| ---------------- | ----- | ---------- |
-| 0 (Not survived) | 549   | ~62%       |
-| 1 (Survived)     | 342   | ~38%       |
+    | Class               | Precision | Recall | F1-Score  | Support |
+    | ------------------- | --------- | ------ | --------- | ------- |
+    | **0 – Not Survive** | ✔0.87     | ✔0.80  | ✔0.83     | 105     |
+    | **1 – Survived**    | •0.74     | ✔0.82  | •**0.78** | 74      |
+    | **Accuracy**        |           |        | ✔**0.81** | 179     |
+    | **Macro Avg**       | 0.80      | 0.81   | 0.81      | 179     |
+    | **Weighted Avg**    | 0.82      | 0.81   | 0.81      | 179     |
 
-With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class).
-And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
+    Cross validation gives Mean F1-score = 0.7566 which indicate that our Logistic Regression performs generally well as well.
 
-- **Logistic Model Overall Performance**
-
-  Mean F1-score = 0.7566
-  | Class | Precision | Recall | F1-Score | Support |
-  | ----------------------- | --------- | ------ | -------- | ------- |
-  | **0 – Not Survive** | ✔0.87 | ✔0.80 | ✔0.83 | 105 |
-  | **1 – Survived** | •0.74 | ✔0.82 | •**0.78** | 74 |
-  | **Accuracy** | | | ✔**0.81** | 179 |
-  | **Macro Avg** | 0.80 | 0.81 | 0.81 | 179 |
-  | **Weighted Avg** | 0.82 | 0.81 | 0.81 | 179 |
-
-- **Random Forest**
-
-- **Confusion Matrix**  
-  The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
-
-  ![confusion matrix](web/static/images/confusion_matrix.jpg)
+  - **Random Forest**
 
 ### 3. Django Integration
 
