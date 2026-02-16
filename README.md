@@ -180,7 +180,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   - **Baseline Model: Logistic Regression (RL)**  
     **Why Chosen** 
     
-    Logistic Regression is chosen as the baseline because tt is a simple and widely used model for binary classification tasks. It assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
+    Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
 
     **Prediction Pipeline**
 
