@@ -194,8 +194,17 @@ Table 2: Title Features After One-Hot Encoding
 
 - **Baseline Model: Logistic Regression**  
   We start with logistic regression as a baseline because survival is a binary outcome (`0`/`1`). It is a simple model that provides a strong reference point for comparing more complex models.
-- **Candidate Model 1: Random Forest**  
-  _TODO: Why it may improve on baseline (e.g., nonlinearity, interactions)._
+- **Candidate Model 1: Random Forest (RL)**  
+  Random Forest is a supervised ML method based on multiple decision trees on random subsets of data and features. It handles non-linear realationships and interactions and is a robus choice for complex datasets like Titanic.
+
+- **Comparation**
+
+| Aspect                   | Logistic Regression                                                    | Random Forest                                      |
+| ------------------------ | ---------------------------------------------------------------------- | -------------------------------------------------- |
+| **Categorical Features** | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot; one-hot optional |
+| **Numeric Features**     | Can use directly                                                       | Use directly                                       |
+| **Strength**             | Coefficients = log-odds change compared to baseline                    | Captures non-linear relationships and interactions |
+| **Limitation**           | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
 
 #### 2️⃣ Validation Strategy
 
