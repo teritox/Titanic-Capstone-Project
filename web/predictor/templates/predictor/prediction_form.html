@@ -1,16 +1,68 @@
 {% extends "base.html" %}
 
 {% block body_block %}
-
 <div class="container">
-<h1>Prediction form</h1>
-<h3>Page for sumbitting form</h3>
-
-<form method="post">
-    {% csrf_token %}
-    {{ prediction_form.as_p }}
-    <input type="submit" value="Predict">
-</form>
+    <div class="pt-3">
+    <h1 class="text-center mb-4">Prediction Form</h1>
 </div>
 
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                            <!-- Gender + Age Row -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ prediction_form.gender.label_tag }}
+                                    {{ prediction_form.gender }}
+                                    {% for error in prediction_form.gender.errors %}
+                                        <div class="text-danger small">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    {{ prediction_form.age.label_tag }}
+                                    {{ prediction_form.age }}
+                                    {% for error in prediction_form.age.errors %}
+                                        <div class="text-danger small">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        {% for field in prediction_form %}
+                            {% if field.name != "gender" and field.name != "age" %}
+                                <div class="mb-3">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {% for error in field.errors %}
+                                        <div class="text-danger small">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Predict</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+document.querySelectorAll('.placeholder-select').forEach(select => {
+    const updateColor = () => {
+        select.style.color = select.value === "" ? '#6c757d' : '#212529';
+    };
+
+    select.addEventListener('change', updateColor);
+    updateColor(); 
+});
+</script>
 {% endblock %}
