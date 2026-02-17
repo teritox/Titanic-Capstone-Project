@@ -4,7 +4,7 @@ Python AI / ML student project. Capstone project built on machine learning syste
 
 ## Contents
 
-1. [Project Overview](#porject-overview)
+1. [Project Overview](#project-overview)
 2. [How to set up files and run locally](#how-to-set-up-the-file-and-run-locally)
 3. [Description of the ML model](#description-of-the-machine-learning-models)
 4. [Overview of the system architecture](#overview-of-the-system-architecture)
