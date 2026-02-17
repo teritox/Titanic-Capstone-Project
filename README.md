@@ -189,53 +189,54 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
 
     **Prediction Pipeline**
     1. **Feature Preparation:**
-      - Engineer additional features:
-        - **AgeBin:** Convert `Age` into categorical age groups (e.g., Child, Adult, Senior)
-        - **Title:** Extract titles from passenger names (e.g., Mr, Mrs, Miss, Master, Rare) and encode as categorical
-        - **FamilySize:** Compute total family size `SibSp` + `parch`
-
-      - Encode categorical features `Sex`,`AgeBin`, `Embarked`, `Title`,`Pclass` using one-hot encoding with baseline.
-      - Keep numerical features `Fare`, `FamilySize` as is.
+        - Engineer additional features:
+          - **AgeBin:** Convert `Age` into categorical age groups (e.g., Child, Adult, Senior)
+          - **Title:** Extract titles from passenger names (e.g., Mr, Mrs, Miss, Master, Rare) and encode as categorical
+          - **FamilySize:** Compute total family size `SibSp` + `parch`
+  
+        - Encode categorical features `Sex`,`AgeBin`, `Embarked`, `Title`,`Pclass` using one-hot encoding with baseline.
+        - Keep numerical features `Fare`, `FamilySize` as is.
     2. **Probability Computation:**
-      - Linear Weighted Sum of the Features:
-      $$z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots$$
-      - The Predicted Probability of Survival:
-
-          $$P(\text{Survived}=1) = \frac{1}{1 + e^ {- z}}$$
+        - Linear Weighted Sum of the Features:
+        $$z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots$$
+        - The Predicted Probability of Survival:
+  
+            $$P(\text{Survived}=1) = \frac{1}{1 + e^ {- z}}$$
 
     3. **Prediction**
 
       Assign class based on probability threshold (commonly 0.5):
-      - P>0.5⇒Survived
-      - P≤0.5⇒Did not survive
+        - P>0.5⇒Survived
+        - P≤0.5⇒Did not survive
 
   - **Candidate Model 1: Random Forest (RF)**  
     **Why Chosen** 
     
-  Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction, and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and prediction with the linear, weight-based approach used in Logistic Regression.
+    Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction,      and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and
+    prediction with the linear, weight-based approach used in Logistic Regression.
 
     **Prediction Pipeline**
 
     1.  **Feature Preparation:**
-       - Engineer additional features:
-        - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
-      - Encode categorical features `Sex`,`Embarked`, `Title`,`CabinDeck` as integer labels. **Note:** one-hot encoding is **NOT** applied for the **RF** model.
-      - Keep numerical features `Fare`, `SibSP`, `parch`,`Pclass`, `Age` as is.
+        - Engineer additional features:
+          - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
+        - Encode categorical features `Sex`,`Embarked`, `Title`,`CabinDeck` as integer labels. **Note:** one-hot encoding is **NOT** applied for the **RF** model.
+        - Keep numerical features `Fare`, `SibSP`, `parch`,`Pclass`, `Age` as is.
     2. **Build Decision Trees**
-      - **Bootstrap sampling** of the training data
-      - Random subset of features
+        - **Bootstrap sampling** of the training data
+        - Random subset of features
     3. **Prediction**
-      - Each tree predicts survival (Survived / Not Survived) independently.
-      - Final prediction is determined by majority vote across all trees.
+        - Each tree predicts survival (Survived / Not Survived) independently.
+        - Final prediction is determined by majority vote across all trees.
 
   - **Key Comparisons**
 
   | Aspect                        | Logistic Regression                                                    | Random Forest                                      |
-| ----------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------- |
-| **Categorical Features**      | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot encoding |
-| **Prediction**          | Linear weighted sum passed trough Sigmoid                  | Majority vote across all trees
-| **Strength** | Low computational cost compare to ensemble model like Random Forest   | Captures non-linear relationships and interactions |
-| **Limitation**       | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
+  | ----------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------- |
+  | **Categorical Features**      | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot encoding |
+  | **Prediction**                | Linear weighted sum passed trough Sigmoid                              | Majority vote across all trees |
+  | **Strength**                  | Low computational cost compare to ensemble model like Random Forest    | Captures non-linear relationships and interactions |
+  | **Limitation**                | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
 
   
 #### 2️⃣ Validation Strategy
