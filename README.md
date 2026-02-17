@@ -83,6 +83,29 @@ Go back to [Contents](#contents).
 
 ## Description of the machine learning models
 
+This project solves a binary classification problem: predicting `Survived` (0/1) from passenger features in the Titanic dataset.
+
+Models evaluated:
+- Logistic Regression (baseline linear classifier)
+- Random Forest (non-linear ensemble baseline)
+
+Feature pipeline (used during training and prediction):
+- Missing value handling (Age, Embarked)
+- Engineered features: `Title`, `FamilySize`, `AgeBin`, `CabinDeck`
+- Categorical encoding for model-ready inputs
+
+Evaluation approach:
+- 80/20 train-test split with stratification
+- 5-fold stratified cross-validation
+- Metrics: Accuracy, Confusion Matrix, Precision/Recall/F1
+
+Result summary:
+- Both models achieve about 81% accuracy.
+- Logistic Regression provides better recall for survivors and is used for deployment.
+- Trained model artifact: `web/predictor/titanic_model.pkl`.
+
+See detailed discussion in [Overview of the system architecture](#overview-of-the-system-architecture).
+
 Go back to [Contents](#contents).
 
 ## Overview of the System Architecture
@@ -177,6 +200,8 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   | 2 | 0 | 1 | 0 | 0 |
 
 ### 2. Model Training and Evaluation
+
+This section describes how the machine learning models were selected, trained, validated, and evaluated for Titanic survival prediction. It summarizes the modeling decisions, compares Logistic Regression and Random Forest performance, and explains why the final deployed model was chosen.
 
 #### 2.1 Model Selection (why Logistic Regression or Random Forest) 
   - **Problem Definition**
