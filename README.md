@@ -178,25 +178,6 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
 
 ### 2. Model Training and Evaluation
 
-#### 1️⃣ Model Selection (why Logistic Regression or Random Forest)
-
-- **Problem Definition**
-  The aim is to predict whether a passenger survived the Titanic disaster. This is a binary classification task using the Titanic dataset, which contains passenger information such as age, sex, passenger class, and other relevant features.
-- **Baseline Model: Logistic Regression (RL)**  
-  **Logistic Regression** is chosen as the baseline because tt is a simple and widely used model for binary classification tasks. It assumes a linear relationship between input features and log-odds of the targe outcomes, providing a clear and interpretable reference point for comparing more complex models.
-- **Candidate Model 1: Random Forest (RF)**  
-  **Random Forest** is a supervised ensemble ML method based on multiple decision trees on random subsets of data and features. The core idea behind is that **Many decision trees-> majority votes**.
-
-- **Key Comparation**
-
-| Aspect                   | Logistic Regression                                                    | Random Forest                                      |
-| ------------------------ | ---------------------------------------------------------------------- | -------------------------------------------------- |
-| **Categorical Features** | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot; one-hot optional |
-| **Numeric Features**     | Can use directly depends on the situation                              | Use directly                                       |
-| **Strength**             | Low computational cost compare to ensemble model like Random Forest    | Captures non-linear relationships and interactions |
-| **Limitation**           | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
-
-### 2. Model Training and Evaluation
 #### 1️⃣ Model Selection (why Logistic Regression or Random Forest) 
   - **Problem Definition**
 
@@ -204,7 +185,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   - **Baseline Model: Logistic Regression (RL)**  
     **Why Chosen** 
     
-    Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the target outcomes, providing a clear and interpretable reference point for comparing more complex models.
+    Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the target outcomes, providing a clear and interpretable reference point for comparing more complex models. reduntant
 
     **Prediction Pipeline**
     1. **Feature Preparation:**
