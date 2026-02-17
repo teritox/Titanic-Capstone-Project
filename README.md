@@ -154,7 +154,7 @@ This feature contains only two missing values, which are unlikely to affect the 
 
 #### 1.3 Encoding Categorical Variables
 
-One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `Title` features to prevent the model from assuming any ordinal relationship.
+One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pclass` and `Title` features to prevent the model from assuming any ordinal relationship.
 
 - **Sex:**
   - `male → 0`
@@ -259,7 +259,7 @@ This section describes how the machine learning models were selected, trained, v
   | Aspect                        | Logistic Regression                                                    | Random Forest                                      |
   | ----------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------- |
   | **Categorical Features**      | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot encoding |
-  | **Prediction**                | Linear weighted sum passed trough Sigmoid                              | Majority vote across all trees |
+  | **Prediction**                | Linear weighted sum passed through Sigmoid                              | Majority vote across all trees |
   | **Strength**                  | Low computational cost compare to ensemble model like Random Forest    | Captures non-linear relationships and interactions |
   | **Limitation**                | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
 
@@ -308,11 +308,11 @@ And Use `stratify=y` in `train_test_split` so that so that **the class distribut
   | **Macro Avg**       | 0.80      | 0.81   | 0.81      | 179     |
   | **Weighted Avg**    | 0.82      | 0.81   | 0.81      | 179     |
 
-  Cross validation gives Mean F1-score = 0.7566 which indicate that our Logistic Regression model performs generally well as well.
+  Cross validation gives Mean F1-score = 0.7566 which indicates that our Logistic Regression model performs generally well as well.
 
 - **Random Forest Model Overall Performance**
 
-  Cross validation gives Mean F1-score = 0.7660 which indicate that our RF model performs generally well.
+  Cross validation gives Mean F1-score = 0.7660 which indicates that our RF model performs generally well.
 
   | Class | Precision | Recall | F1-score | Support |
   |-------|-----------|--------|----------|---------|
