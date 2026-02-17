@@ -89,7 +89,7 @@ Go back to [Contents](#contents).
 
 ### 1. Data Preprocessing
 
-#### 1️⃣ Handling Missing Values
+#### 1.1 Handling Missing Values
 
 #### Age
 
@@ -113,7 +113,7 @@ Instead of using a global average, missing **Age** values were imputed using **t
 
 This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with letter **C**
 
-#### 2️⃣ Feature Engineering
+#### 1.2 Feature Engineering
 
 - **FamilySize:**
   A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
@@ -129,7 +129,7 @@ This feature contains only two missing values, which are unlikely to affect the 
   - **Middle Aged:** 40-59 years
   - **Senior:** 60+ years
 
-#### 3️⃣ Encoding Categorical Variables
+#### 1.3 Encoding Categorical Variables
 
 One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `Title` features to prevent the model from assuming any ordinal relationship.
 
@@ -178,7 +178,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
 
 ### 2. Model Training and Evaluation
 
-#### 1️⃣ Model Selection (why Logistic Regression or Random Forest) 
+#### 2.1 Model Selection (why Logistic Regression or Random Forest) 
   - **Problem Definition**
 
     The aim is to predict whether a passenger survived the Titanic disaster. This is a binary classification task using the Titanic dataset, which contains passenger information such as age, sex, passenger class, and other relevant features.
@@ -239,7 +239,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   | **Limitation**                | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
 
   
-#### 2️⃣ Validation Strategy
+#### 2.2 Validation Strategy
 
 - **Train, Test and Validation Datasets**
 
@@ -263,7 +263,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   f1_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='f1')
   ```
 
-#### 3️⃣ Evaluation Metrics
+#### 2.3 Evaluation Metrics
 
 The Titanic Dataset is slightly imbalanced as shown below:
 
