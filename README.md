@@ -275,12 +275,6 @@ This section describes how the machine learning models were selected, trained, v
   - Test dataset = 178 rows →enough to get stable f1 scores
 
   We use **Stratified K-Fold Cross-Validation** :
-
-    The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance. 
-    
-    Therefore, We split data with `test_size=0.2` (80% train / 20% test), balancing enough training data with a sufficiently large test set for stable evaluation.
-    - Training dataset = 713 rows → enough to train logistic regression
-    - Test dataset = 178 rows →enough to get stable f1 scores
   Split training data into k folds, train on k-1 folds and validate on the remaining fold and repeat k times. The class distribution in each fold is fixed
 
   ```python
