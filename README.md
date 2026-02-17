@@ -185,7 +185,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   - **Baseline Model: Logistic Regression (RL)**  
     **Why Chosen** 
     
-    Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the target outcomes, providing a clear and interpretable reference point for comparing more complex models. reduntant
+    Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the target outcomes, providing a clear and interpretable reference point for comparing more complex models.
 
     **Prediction Pipeline**
     1. **Feature Preparation:**
@@ -385,51 +385,47 @@ Validation includes:
   - These categories are then converted into one-hot encoded features.
 
     Example:
-
+    ```python
     agebin_dict = {
-    "AgeBin_Teen": 0,
-    "AgeBin_Adult": 1,
-    "AgeBin_Middle Aged": 0,
-    "AgeBin_Senior": 0
-    }
+                  "AgeBin_Teen": 0,
+                  "AgeBin_Adult": 1,
+                  "AgeBin_Middle Aged": 0,
+                  "AgeBin_Senior": 0
+                  }
 
   - Child is used as the baseline category.
 
 - Embarked Encoding
   - Embark location is converted into one-hot encoded features:
-
-    embarked_dict = {
-    "Embarked_C": 1,
-    "Embarked_Q": 0
-    }
+    ```python
+    embarked_dict = {"Embarked_C": 1, "Embarked_Q": 0}
 
   - Southampton is used as the baseline.
 
 - Title Encoding
   - Passenger title is converted into binary features:
-
+    ```python
     title_dict = {
-    "Title_Miss": 0,
-    "Title_Mrs": 1,
-    "Title_Mr": 0,
-    "Title_Rare": 0
-    }
+                  "Title_Miss": 0,
+                  "Title_Mrs": 1,
+                  "Title_Mr": 0,
+                  "Title_Rare": 0
+                  }
 
   - Master is used as the baseline category.
 
 - Family Size Feature Engineering
   - A new feature called FamilySize is created:
 
-    FamilySize =
-    siblings_or_spouses
-    - parch
-    - 1
+    ```python
+    FamilySize = siblings_or_spouses + parch +1
 
   - This represents total family members onboard.
 
 - Final Data Conversion
   - All features are combined and converted into a Pandas DataFrame:
 
+    ```python
     df = pd.DataFrame([data])
 
   - This ensures compatibility with the trained model.
@@ -437,38 +433,34 @@ Validation includes:
 **3.4 Prediction Generation**
 
 - After preprocessing, the model generates predictions using:
-
+  ```python
   prediction_result = model.predict(X)[0]
   probability = model.predict_proba(X)[0][1]
 
 - The model returns:
 
   Prediction result:
-
-  0 → Did Not Survive
-
-  1 → Survived
-  - Prediction probability:
-
-  Probability of survival between 0 and 1
+  ```text
+    0 → Did Not Survive
+    1 → Survived
+  ```
+  
+  - Prediction probability: Probability of survival between 0 and 1
 
 **3.5 Saving Predictions to the Database**
 
 - The prediction and input data are saved in the Django database:
-
+  ```django
   prediction_obj = Prediction.objects.create(
-  input_data=input_data,
-  prediction_result=prediction_result,
-  prediction_probability=prediction_probability,
-  )
+                input_data=input_data,
+                prediction_result=prediction_result,
+                prediction_probability=prediction_probability,)
 
 - This allows the application to store prediction history.
 
 **3.6 Displaying Prediction Results**
 
-- After prediction, the user is redirected to the result page:
-
-  result.html
+- After prediction, the user is redirected to the result page: `result.html`
 
 - The page displays:
 
