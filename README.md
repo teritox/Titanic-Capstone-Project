@@ -275,7 +275,7 @@ The Titanic Dataset is slightly imbalanced as shown below:
 With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class).
 And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
 
-- **Logistic Model Overall Performance**
+- **Logistic Regression Model Overall Performance**
 
   The model performs well at distinguishing between survivors and non-survivors, correctly identifying most passengers. It occasionally overestimates survival, but overall the confusion matrix shows that the model makes relatively few misclassifications and captures the patterns in the data effectively.
 
@@ -289,9 +289,47 @@ And Use `stratify=y` in `train_test_split` so that so that **the class distribut
   | **Macro Avg**       | 0.80      | 0.81   | 0.81      | 179     |
   | **Weighted Avg**    | 0.82      | 0.81   | 0.81      | 179     |
 
-  Cross validation gives Mean F1-score = 0.7566 which indicate that our Logistic Regression performs generally well as well.
+  Cross validation gives Mean F1-score = 0.7566 which indicate that our Logistic Regression model performs generally well as well.
 
-- **Random Forest**
+- **Random Forest Model Overall Performance**
+
+  Cross validation gives Mean F1-score = 0.7660 which indicate that our RF model performs generally well.
+
+  | Class | Precision | Recall | F1-score | Support |
+  |-------|-----------|--------|----------|---------|
+  | **0 – Not Survived** |✔0.82 |✔0.88 | ✔0.85 | 110 |
+  | **1 – Survived**     |✔0.79 | •**0.70**| •**0.74** | 69  |
+  | **Accuracy**         |      |      | **0.81** | 179 |
+  | **Macro Avg**        | 0.80 | 0.79 | 0.79 | 179 |
+  | **Weighted Avg**     | 0.81 | 0.81 | 0.81 | 179 |
+
+- **Comparison of prediction performance: LR vs RF**
+  - **Accuracy** : both models give high accuracy
+
+    | Model               | Accuracy |
+    | ------------------- | -------- |
+    | Random Forest       | ~81%     |
+    | Logistic Regression | ~81%     |
+  
+  - **Recall on survivors** : LR is **much better at detecting survivors**, and RF misses more survivors.
+
+
+    | Model | Recall (Survived) |
+    | ----- | ----------------- |
+    | RF    | 0.70              |
+    | LR    | 0.82              |
+
+  - **Precision on survivors** : RF is slightly more precise at prediction on survivor. 
+
+    | Model | Precision (Survived) |
+    | ----- | -------------------- |
+    | RF    | 0.79                 |
+    |  LR    | 0.74                 |
+
+
+Both Logistic Regression and Random Forest achieved similar overall accuracy (~81%). However, Logistic Regression is more balanced and Random Forest is slightly biased toward predicting non-survival. 
+  
+
 
 ### 3. Django Integration
 
