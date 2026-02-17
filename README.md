@@ -449,6 +449,7 @@ Validation includes:
                   "AgeBin_Middle Aged": 0,
                   "AgeBin_Senior": 0
                   }
+    ```
 
   - Child is used as the baseline category.
 
@@ -456,6 +457,7 @@ Validation includes:
   - Embark location is converted into one-hot encoded features:
     ```python
     embarked_dict = {"Embarked_C": 1, "Embarked_Q": 0}
+    ```
 
   - Southampton is used as the baseline.
 
@@ -468,6 +470,7 @@ Validation includes:
                   "Title_Mr": 0,
                   "Title_Rare": 0
                   }
+    ```
 
   - Master is used as the baseline category.
 
@@ -476,6 +479,7 @@ Validation includes:
 
     ```python
     FamilySize = siblings_or_spouses + parch +1
+    ```
 
   - This represents total family members onboard.
 
@@ -484,6 +488,7 @@ Validation includes:
 
     ```python
     df = pd.DataFrame([data])
+    ```
 
   - This ensures compatibility with the trained model.
 
@@ -493,6 +498,7 @@ Validation includes:
   ```python
   prediction_result = model.predict(X)[0]
   probability = model.predict_proba(X)[0][1]
+  ```
 
 - The model returns:
 
@@ -512,6 +518,7 @@ Validation includes:
                 input_data=input_data,
                 prediction_result=prediction_result,
                 prediction_probability=prediction_probability,)
+  ```
 
 - This allows the application to store prediction history.
 
