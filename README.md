@@ -58,7 +58,7 @@ conda activate titanic-capstone-env # or the name specified in environment.yml
 This project uses Django and a SQLite database to store previous predictions.
 
 ```bash
-python manage.py migrate
+python web/manage.py migrate
 ```
 
 **If you encounter migration issues, ensure the virtual environment is activated before running Django commands.**
@@ -66,7 +66,7 @@ python manage.py migrate
 ### Run the server locally
 
 ```bash
-python manage.py runserver
+python web/manage.py runserver
 ```
 
 Then open your browser and go to:
