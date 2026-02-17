@@ -154,7 +154,7 @@ This feature contains only two missing values, which are unlikely to affect the 
 
 #### 1.3 Encoding Categorical Variables
 
-One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pclass` and `Title` features to prevent the model from assuming any ordinal relationship.
+One-hot encoding with baseline was used for `AgeBin`,`Embarked`,`Pclass` and `Title` features to prevent the model from assuming any ordinal relationship.
 
 - **Sex:**
   - `male → 0`
@@ -217,7 +217,7 @@ This section describes how the machine learning models were selected, trained, v
         - Engineer additional features:
           - **AgeBin:** Convert `Age` into categorical age groups (e.g., Child, Adult, Senior)
           - **Title:** Extract titles from passenger names (e.g., Mr, Mrs, Miss, Master, Rare) and encode as categorical
-          - **FamilySize:** Compute total family size `SibSp` + `parch`
+          - **FamilySize:** Compute total family size `SibSp` + `parch` + 1
   
         - Encode categorical features `Sex`,`AgeBin`, `Embarked`, `Title`,`Pclass` using one-hot encoding with baseline.
         - Keep numerical features `Fare`, `FamilySize` as is.
@@ -237,7 +237,7 @@ This section describes how the machine learning models were selected, trained, v
   - **Candidate Model 1: Random Forest (RF)**  
     **Why Chosen** 
     
-    Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction,      and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and
+    Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction, and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and
     prediction with the linear, weight-based approach used in Logistic Regression.
 
     **Prediction Pipeline**
@@ -246,7 +246,7 @@ This section describes how the machine learning models were selected, trained, v
         - Engineer additional features:
           - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
         - Encode categorical features `Sex`,`Embarked`, `Title`,`CabinDeck` as integer labels. **Note:** one-hot encoding is **NOT** applied for the **RF** model.
-        - Keep numerical features `Fare`, `SibSP`, `parch`,`Pclass`, `Age` as is.
+        - Keep numerical features `Fare`, `SibSp`, `parch`,`Pclass`, `Age` as is.
     2. **Build Decision Trees**
         - **Bootstrap sampling** of the training data
         - Random subset of features
@@ -292,7 +292,7 @@ The Titanic Dataset is slightly imbalanced as shown below:
 | 1 (Survived)     | 342   | ~38%       |
 
 With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class).
-And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
+And use `stratify=y` in `train_test_split` so that **the class distribution in train and test sets matches the original distribution of y**.
 
 - **Logistic Regression Model Overall Performance**
 
@@ -308,7 +308,7 @@ And Use `stratify=y` in `train_test_split` so that so that **the class distribut
   | **Macro Avg**       | 0.80      | 0.81   | 0.81      | 179     |
   | **Weighted Avg**    | 0.82      | 0.81   | 0.81      | 179     |
 
-  Cross validation gives Mean F1-score = 0.7566 which indicates that our Logistic Regression model performs generally well as well.
+  Cross validation gives Mean F1-score = 0.7566 which indicates that our Logistic Regression model performs generally well too.
 
 - **Random Forest Model Overall Performance**
 
@@ -357,7 +357,7 @@ The trained machine learning model is deployed inside the Django web application
 **3.1 Model Loading**
 The trained model is saved as a serialized file (titanic_model.pkl) using Python's pickle module(ml_model.py) and loaded inside the Django application. - The model is loaded in the machine learning module:
 
-      BASE_DIR = os.path.dirname(os.path.abspath(**file**))
+      BASE_DIR = os.path.dirname(os.path.abspath(__file__))
       MODEL_PATH = os.path.join(BASE_DIR, "titanic_model.pkl")
 
       with open(MODEL_PATH, "rb") as f:
@@ -478,7 +478,7 @@ Validation includes:
   - A new feature called FamilySize is created:
 
     ```python
-    FamilySize = siblings_or_spouses + parch +1
+    FamilySize = siblings_or_spouses + parch + 1
     ```
 
   - This represents total family members onboard.
