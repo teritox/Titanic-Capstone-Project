@@ -4,7 +4,7 @@ Python AI / ML student project. Capstone project built on machine learning syste
 
 ## Contents
 
-1. [Project Overview](#porject-overview)
+1. [Project Overview](#project-overview)
 2. [How to set up files and run locally](#how-to-set-up-the-file-and-run-locally)
 3. [Description of the ML model](#description-of-the-machine-learning-models)
 4. [Overview of the system architecture](#overview-of-the-system-architecture)
@@ -58,7 +58,7 @@ conda activate titanic-capstone-env # or the name specified in environment.yml
 This project uses Django and a SQLite database to store previous predictions.
 
 ```bash
-python manage.py migrate
+python web/manage.py migrate
 ```
 
 **If you encounter migration issues, ensure the virtual environment is activated before running Django commands.**
@@ -66,7 +66,7 @@ python manage.py migrate
 ### Run the server locally
 
 ```bash
-python manage.py runserver
+python web/manage.py runserver
 ```
 
 Then open your browser and go to:
@@ -83,13 +83,36 @@ Go back to [Contents](#contents).
 
 ## Description of the machine learning models
 
+This project solves a binary classification problem: predicting `Survived` (0/1) from passenger features in the Titanic dataset.
+
+Models evaluated:
+- Logistic Regression (baseline linear classifier)
+- Random Forest (non-linear ensemble baseline)
+
+Feature pipeline (used during training and prediction):
+- Missing value handling (Age, Embarked)
+- Engineered features: `Title`, `FamilySize`, `AgeBin`, `CabinDeck`
+- Categorical encoding for model-ready inputs
+
+Evaluation approach:
+- 80/20 train-test split with stratification
+- 5-fold stratified cross-validation
+- Metrics: Accuracy, Confusion Matrix, Precision/Recall/F1
+
+Result summary:
+- Both models achieve about 81% accuracy.
+- Logistic Regression provides better recall for survivors and is used for deployment.
+- Trained model artifact: `web/predictor/titanic_model.pkl`.
+
+See detailed discussion in [Overview of the system architecture](#overview-of-the-system-architecture).
+
 Go back to [Contents](#contents).
 
 ## Overview of the System Architecture
 
 ### 1. Data Preprocessing
 
-#### 1️⃣ Handling Missing Values
+#### 1.1 Handling Missing Values
 
 #### Age
 
@@ -122,7 +145,7 @@ Age: The Z-score method and distribution visualization were used because Age is 
 
 Conclusion: No outliers were removed, as they represent valid data and help preserve important patterns for the machine learning model.
 
-#### 2️⃣ Feature Engineering
+#### 1.2 Feature Engineering
 
 - **FamilySize:**
   A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
@@ -138,9 +161,9 @@ Conclusion: No outliers were removed, as they represent valid data and help pres
   - **Middle Aged:** 40-59 years
   - **Senior:** 60+ years
 
-#### 3️⃣ Encoding Categorical Variables
+#### 1.3 Encoding Categorical Variables
 
-One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `Title` features to prevent the model from assuming any ordinal relationship.
+One-hot encoding with baseline was used for `AgeBin`,`Embarked`,`Pclass` and `Title` features to prevent the model from assuming any ordinal relationship.
 
 - **Sex:**
   - `male → 0`
@@ -187,16 +210,41 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
 
 ### 2. Model Training and Evaluation
 
-#### 1️⃣ Model Selection (why Logistic Regression or Random Forest)
+This section describes how the machine learning models were selected, trained, validated, and evaluated for Titanic survival prediction. It summarizes the modeling decisions, compares Logistic Regression and Random Forest performance, and explains why the final deployed model was chosen.
+
+#### 2.1 Model Selection (why Logistic Regression or Random Forest) 
+  - **Problem Definition**
 
 - **Problem Definition**
 
   The aim is to predict whether a passenger survived the Titanic disaster. This is a binary classification task using the Titanic dataset, which contains passenger information such as age, sex, passenger class, and other relevant features.
 
+    **Prediction Pipeline**
+    1. **Feature Preparation:**
+        - Engineer additional features:
+          - **AgeBin:** Convert `Age` into categorical age groups (e.g., Child, Adult, Senior)
+          - **Title:** Extract titles from passenger names (e.g., Mr, Mrs, Miss, Master, Rare) and encode as categorical
+          - **FamilySize:** Compute total family size `SibSp` + `parch` + 1
+  
+        - Encode categorical features `Sex`,`AgeBin`, `Embarked`, `Title`,`Pclass` using one-hot encoding with baseline.
+        - Keep numerical features `Fare`, `FamilySize` as is.
+    2. **Probability Computation:**
+        - Linear Weighted Sum of the Features:
+        $$z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots$$
+        - The Predicted Probability of Survival:
+  
+            $$P(\text{Survived}=1) = \frac{1}{1 + e^ {- z}}$$
+
 - **Baseline Model: Logistic Regression (RL)**  
   **Why Chosen**
 
   Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR assumes a linear relationship between input features and log-odds of the target outcomes, providing a clear and interpretable reference point for comparing more complex models.
+
+- **Candidate Model 1: Random Forest (RF)**  
+  **Why Chosen** 
+
+  Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction, and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and
+  prediction with the linear, weight-based approach used in Logistic Regression.
 
   **Prediction Pipeline**
   1. **Feature Preparation:**
@@ -204,59 +252,38 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
        - **AgeBin:** Convert `Age` into categorical age groups (e.g., Child, Adult, Senior)
        - **Title:** Extract titles from passenger names (e.g., Mr, Mrs, Miss, Master, Rare) and encode as categorical
        - **FamilySize:** Compute total family size `SibSp` + `parch`
-     - Encode categorical features `Sex`,`AgeBin`, `Embarked`, `Title`,`Pclass` using one-hot encoding with baseline.
+       - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
+     - Encode categorical features `AgeBin`, `Embarked`, `Title`,`Pclass` using one-hot encoding with baseline, and encode `Sex` as 0 or 1.
      - Keep numerical features `Fare`, `FamilySize` as is.
 
   2. **Probability Computation:**
      - Linear Weighted Sum of the Features:
        $$z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots$$
      - The Predicted Probability of Survival:
-
        $$P(\text{Survived}=1) = \frac{1}{1 + e^ {- z}}$$
 
   3. **Prediction**
-
   Assign class based on probability threshold (commonly 0.5): - P>0.5⇒Survived - P≤0.5⇒Did not survive
 
-- **Candidate Model 1: Random Forest (RF)**  
-  **Why Chosen**
+  | Aspect                        | Logistic Regression                                                    | Random Forest                                      |
+  | ----------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------- |
+  | **Categorical Features**      | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot encoding |
+  | **Prediction**                | Linear weighted sum passed through Sigmoid                              | Majority vote across all trees |
+  | **Strength**                  | Low computational cost compare to ensemble model like Random Forest    | Captures non-linear relationships and interactions |
+  | **Limitation**                | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
 
-  Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction, and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and
-  prediction with the linear, weight-based approach used in Logistic Regression.
-
-  **Prediction Pipeline**
-  1.  **Feature Preparation:**
-      - Engineer additional features:
-        - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
-      - Encode categorical features `Sex`,`Embarked`, `Title`,`CabinDeck` as integer labels. **Note:** one-hot encoding is **NOT** applied for the **RF** model.
-      - Keep numerical features `Fare`, `SibSP`, `parch`,`Pclass`, `Age` as is.
-  2.  **Build Decision Trees**
-      - **Bootstrap sampling** of the training data
-      - Random subset of features
-  3.  **Prediction**
-      - Each tree predicts survival (Survived / Not Survived) independently.
-      - Final prediction is determined by majority vote across all trees.
-
-- **Key Comparisons**
-
-| Aspect                   | Logistic Regression                                                    | Random Forest                                      |
-| ------------------------ | ---------------------------------------------------------------------- | -------------------------------------------------- |
-| **Categorical Features** | Must be one-hot encoded; baseline category dropped (`drop_first=True`) | Can be integer-mapped or one-hot encoding          |
-| **Prediction**           | Linear weighted sum passed trough Sigmoid                              | Majority vote across all trees                     |
-| **Strength**             | Low computational cost compare to ensemble model like Random Forest    | Captures non-linear relationships and interactions |
-| **Limitation**           | Cannot automatically capture interactions or non-linear effects        | Predicted survival via majority vote of trees      |
-
-#### 2️⃣ Validation Strategy
+  
+#### 2.2 Validation Strategy
 
 - **Train, Test and Validation Datasets**
 
   The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance.
 
   Therefore, We split data with `test_size=0.2` (80% train / 20% test), balancing enough training data with a sufficiently large test set for stable evaluation.
-  - Traning dataset = 713 rows → enough to train logistic regression
+  - Training dataset = 713 rows → enough to train logistic regression
   - Test dataset = 178 rows →enough to get stable f1 scores
 
-  We use **Stratified K-Fold Cross-Valiation** :
+  We use **Stratified K-Fold Cross-Validation** :
 
   The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance.
 
@@ -270,7 +297,7 @@ One-hot encoding with baseline was used for `AgeBin`,`Embarked` ,`Pcalss` and `T
   f1_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='f1')
   ```
 
-#### 3️⃣ Evaluation Metrics
+#### 2.3 Evaluation Metrics
 
 The Titanic Dataset is slightly imbalanced as shown below:
 
@@ -280,7 +307,7 @@ The Titanic Dataset is slightly imbalanced as shown below:
 | 1 (Survived)     | 342   | ~38%       |
 
 With 62% non-survivors (Majority Class) and 38% survivors (Minority Class). The accuracy is biased towards to non-survivors, therefore we focus on `f1` for the survivors (minority class).
-And Use `stratify=y` in `train_test_split` so that so that **the class distribution in train and test sets matches the original distribution of y**.
+And use `stratify=y` in `train_test_split` so that **the class distribution in train and test sets matches the original distribution of y**.
 
 - **Logistic Regression Model Overall Performance**
 
@@ -296,11 +323,11 @@ And Use `stratify=y` in `train_test_split` so that so that **the class distribut
   | **Macro Avg**       | 0.80      | 0.81   | 0.81      | 179     |
   | **Weighted Avg**    | 0.82      | 0.81   | 0.81      | 179     |
 
-  Cross validation gives Mean F1-score = 0.7566 which indicate that our Logistic Regression model performs generally well as well.
+  Cross validation gives Mean F1-score = 0.7566 which indicates that our Logistic Regression model performs generally well too.
 
 - **Random Forest Model Overall Performance**
 
-  Cross validation gives Mean F1-score = 0.7660 which indicate that our RF model performs generally well.
+  Cross validation gives Mean F1-score = 0.7660 which indicates that our RF model performs generally well.
 
   | Class                | Precision | Recall    | F1-score  | Support |
   | -------------------- | --------- | --------- | --------- | ------- |
@@ -341,7 +368,7 @@ The trained machine learning model is deployed inside the Django web application
 **3.1 Model Loading**
 The trained model is saved as a serialized file (titanic_model.pkl) using Python's pickle module(ml_model.py) and loaded inside the Django application. - The model is loaded in the machine learning module:
 
-      BASE_DIR = os.path.dirname(os.path.abspath(**file**))
+      BASE_DIR = os.path.dirname(os.path.abspath(__file__))
       MODEL_PATH = os.path.join(BASE_DIR, "titanic_model.pkl")
 
       with open(MODEL_PATH, "rb") as f:
@@ -434,6 +461,7 @@ Validation includes:
                   "AgeBin_Middle Aged": 0,
                   "AgeBin_Senior": 0
                   }
+    ```
 
     ```
 
@@ -444,6 +472,7 @@ Validation includes:
 
     ```python
     embarked_dict = {"Embarked_C": 1, "Embarked_Q": 0}
+    ```
 
     ```
 
@@ -459,6 +488,7 @@ Validation includes:
                   "Title_Mr": 0,
                   "Title_Rare": 0
                   }
+    ```
 
     ```
 
@@ -468,7 +498,8 @@ Validation includes:
   - A new feature called FamilySize is created:
 
     ```python
-    FamilySize = siblings_or_spouses + parch +1
+    FamilySize = siblings_or_spouses + parch + 1
+    ```
 
     ```
 
@@ -479,6 +510,7 @@ Validation includes:
 
     ```python
     df = pd.DataFrame([data])
+    ```
 
     ```
 
@@ -491,6 +523,7 @@ Validation includes:
   ```python
   prediction_result = model.predict(X)[0]
   probability = model.predict_proba(X)[0][1]
+  ```
 
   ```
 
@@ -514,6 +547,7 @@ Validation includes:
                 input_data=input_data,
                 prediction_result=prediction_result,
                 prediction_probability=prediction_probability,)
+  ```
 
   ```
 
