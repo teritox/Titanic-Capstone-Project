@@ -136,7 +136,16 @@ Instead of using a global average, missing **Age** values were imputed using **t
 
 This feature contains only two missing values, which are unlikely to affect the model's performance. Therefore, these values are imputed with letter **C**
 
-#### 1.2 Feature Engineering
+- **Outlier Detection**
+  Outlier analysis was performed on the Fare and Age features to identify extreme values.
+
+Fare: The IQR (Interquartile Range) method was used because Fare is highly skewed. Although some high fare values were identified as outliers, they were retained since they represent real differences in passenger class and are important for survival prediction.
+
+Age: The Z-score method and distribution visualization were used because Age is approximately normally distributed. The detected values were within realistic human limits, so no outliers were removed.
+
+Conclusion: No outliers were removed, as they represent valid data and help preserve important patterns for the machine learning model.
+
+#### 2️⃣ Feature Engineering
 
 - **FamilySize:**
   A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
@@ -206,11 +215,9 @@ This section describes how the machine learning models were selected, trained, v
 #### 2.1 Model Selection (why Logistic Regression or Random Forest) 
   - **Problem Definition**
 
-    The aim is to predict whether a passenger survived the Titanic disaster. This is a binary classification task using the Titanic dataset, which contains passenger information such as age, sex, passenger class, and other relevant features.
-  - **Baseline Model: Logistic Regression (RL)**  
-    **Why Chosen** 
-    
-    Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR  assumes a linear relationship between input features and log-odds of the target outcomes, providing a clear and interpretable reference point for comparing more complex models.
+- **Problem Definition**
+
+  The aim is to predict whether a passenger survived the Titanic disaster. This is a binary classification task using the Titanic dataset, which contains passenger information such as age, sex, passenger class, and other relevant features.
 
     **Prediction Pipeline**
     1. **Feature Preparation:**
@@ -228,33 +235,35 @@ This section describes how the machine learning models were selected, trained, v
   
             $$P(\text{Survived}=1) = \frac{1}{1 + e^ {- z}}$$
 
-    3. **Prediction**
+- **Baseline Model: Logistic Regression (RL)**  
+  **Why Chosen**
 
-      Assign class based on probability threshold (commonly 0.5):
-        - P>0.5⇒Survived
-        - P≤0.5⇒Did not survive
+  Logistic Regression is chosen as the baseline because it is a simple and widely used model for binary classification tasks. LR assumes a linear relationship between input features and log-odds of the target outcomes, providing a clear and interpretable reference point for comparing more complex models.
 
-  - **Candidate Model 1: Random Forest (RF)**  
-    **Why Chosen** 
-    
-    Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction, and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and
-    prediction with the linear, weight-based approach used in Logistic Regression.
+- **Candidate Model 1: Random Forest (RF)**  
+  **Why Chosen** 
 
-    **Prediction Pipeline**
+  Random Forest is a supervised ensemble ML method that uses many decision trees trained on random subsets of data and features. Each tree makes a prediction, and the final output is determined by majority voting. Using this model allows us to compare a nonlinear, tree-based approach to feature handling and
+  prediction with the linear, weight-based approach used in Logistic Regression.
 
-    1.  **Feature Preparation:**
-        - Engineer additional features:
-          - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
-        - Encode categorical features `Sex`,`Embarked`, `Title`,`CabinDeck` as integer labels. **Note:** one-hot encoding is **NOT** applied for the **RF** model.
-        - Keep numerical features `Fare`, `SibSp`, `parch`,`Pclass`, `Age` as is.
-    2. **Build Decision Trees**
-        - **Bootstrap sampling** of the training data
-        - Random subset of features
-    3. **Prediction**
-        - Each tree predicts survival (Survived / Not Survived) independently.
-        - Final prediction is determined by majority vote across all trees.
+  **Prediction Pipeline**
+  1. **Feature Preparation:**
+     - Engineer additional features:
+       - **AgeBin:** Convert `Age` into categorical age groups (e.g., Child, Adult, Senior)
+       - **Title:** Extract titles from passenger names (e.g., Mr, Mrs, Miss, Master, Rare) and encode as categorical
+       - **FamilySize:** Compute total family size `SibSp` + `parch`
+       - **CabinDeck:** Extract letters from `Cabin` into categorical groups (e.g., `['Unknown', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T']`).
+     - Encode categorical features `AgeBin`, `Embarked`, `Title`,`Pclass` using one-hot encoding with baseline, and encode `Sex` as 0 or 1.
+     - Keep numerical features `Fare`, `FamilySize` as is.
 
-  - **Key Comparisons**
+  2. **Probability Computation:**
+     - Linear Weighted Sum of the Features:
+       $$z = \beta_0 + \beta_1 \text{Sex} + \beta_2 \text{Pclass} + \beta_3 \text{Fare} + \beta_4 \text{AgeBin} + \beta_5 \text{Title} + \dots$$
+     - The Predicted Probability of Survival:
+       $$P(\text{Survived}=1) = \frac{1}{1 + e^ {- z}}$$
+
+  3. **Prediction**
+  Assign class based on probability threshold (commonly 0.5): - P>0.5⇒Survived - P≤0.5⇒Did not survive
 
   | Aspect                        | Logistic Regression                                                    | Random Forest                                      |
   | ----------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------- |
@@ -275,7 +284,13 @@ This section describes how the machine learning models were selected, trained, v
   - Test dataset = 178 rows →enough to get stable f1 scores
 
   We use **Stratified K-Fold Cross-Validation** :
-  Split training data into k folds, train on k-1 folds and validate on the remaining fold and repeat k times. The class distribution in each fold is fixed
+
+  The Titanic dataset has 891 rows, which is relatively small. A 0.1 test split gives more training data, but the test set would only have 89 rows, making the metrics less stable. A 0.3 test split provides a larger test set but reduces the training data, which could slightly hurt model performance.
+
+  Therefore, We split data with `test_size=0.2` (80% train / 20% test), balancing enough training data with a sufficiently large test set for stable evaluation.
+  - Training dataset = 713 rows → enough to train logistic regression
+  - Test dataset = 178 rows →enough to get stable f1 scores
+    Split training data into k folds, train on k-1 folds and validate on the remaining fold and repeat k times. The class distribution in each fold is fixed
 
   ```python
   cv = StratifiedKFold(n_splits=5, shuffle=True,random_state=42)
@@ -314,13 +329,13 @@ And use `stratify=y` in `train_test_split` so that **the class distribution in t
 
   Cross validation gives Mean F1-score = 0.7660 which indicates that our RF model performs generally well.
 
-  | Class | Precision | Recall | F1-score | Support |
-  |-------|-----------|--------|----------|---------|
-  | **0 – Not Survived** |✔0.82 |✔0.88 | ✔0.85 | 110 |
-  | **1 – Survived**     |✔0.79 | •**0.70**| •**0.74** | 69  |
-  | **Accuracy**         |      |      | **0.81** | 179 |
-  | **Macro Avg**        | 0.80 | 0.79 | 0.79 | 179 |
-  | **Weighted Avg**     | 0.81 | 0.81 | 0.81 | 179 |
+  | Class                | Precision | Recall    | F1-score  | Support |
+  | -------------------- | --------- | --------- | --------- | ------- |
+  | **0 – Not Survived** | ✔0.82     | ✔0.88     | ✔0.85     | 110     |
+  | **1 – Survived**     | ✔0.79     | •**0.70** | •**0.74** | 69      |
+  | **Accuracy**         |           |           | **0.81**  | 179     |
+  | **Macro Avg**        | 0.80      | 0.79      | 0.79      | 179     |
+  | **Weighted Avg**     | 0.81      | 0.81      | 0.81      | 179     |
 
 - **Comparison of prediction performance: LR vs RF**
   - **Accuracy** : both models give high accuracy
@@ -329,26 +344,22 @@ And use `stratify=y` in `train_test_split` so that **the class distribution in t
     | ------------------- | -------- |
     | Random Forest       | ~81%     |
     | Logistic Regression | ~81%     |
-  
-  - **Recall on survivors** : LR is **much better at detecting survivors**, and RF misses more survivors.
 
+  - **Recall on survivors** : LR is **much better at detecting survivors**, and RF misses more survivors.
 
     | Model | Recall (Survived) |
     | ----- | ----------------- |
     | RF    | 0.70              |
     | LR    | 0.82              |
 
-  - **Precision on survivors** : RF is slightly more precise at prediction on survivor. 
+  - **Precision on survivors** : RF is slightly more precise at prediction on survivor.
 
     | Model | Precision (Survived) |
     | ----- | -------------------- |
     | RF    | 0.79                 |
-    |  LR    | 0.74                 |
+    | LR    | 0.74                 |
 
-
-Both Logistic Regression and Random Forest achieved similar overall accuracy (~81%). However, Logistic Regression is more balanced and Random Forest is slightly biased toward predicting non-survival. 
-  
-
+Both Logistic Regression and Random Forest achieved similar overall accuracy (~81%). However, Logistic Regression is more balanced and Random Forest is slightly biased toward predicting non-survival.
 
 ### 3. Django Integration
 
@@ -442,6 +453,7 @@ Validation includes:
   - These categories are then converted into one-hot encoded features.
 
     Example:
+
     ```python
     agebin_dict = {
                   "AgeBin_Teen": 0,
@@ -451,18 +463,24 @@ Validation includes:
                   }
     ```
 
+    ```
+
   - Child is used as the baseline category.
 
 - Embarked Encoding
   - Embark location is converted into one-hot encoded features:
+
     ```python
     embarked_dict = {"Embarked_C": 1, "Embarked_Q": 0}
+    ```
+
     ```
 
   - Southampton is used as the baseline.
 
 - Title Encoding
   - Passenger title is converted into binary features:
+
     ```python
     title_dict = {
                   "Title_Miss": 0,
@@ -470,6 +488,8 @@ Validation includes:
                   "Title_Mr": 0,
                   "Title_Rare": 0
                   }
+    ```
+
     ```
 
   - Master is used as the baseline category.
@@ -481,6 +501,8 @@ Validation includes:
     FamilySize = siblings_or_spouses + parch + 1
     ```
 
+    ```
+
   - This represents total family members onboard.
 
 - Final Data Conversion
@@ -490,34 +512,43 @@ Validation includes:
     df = pd.DataFrame([data])
     ```
 
+    ```
+
   - This ensures compatibility with the trained model.
 
 **3.4 Prediction Generation**
 
 - After preprocessing, the model generates predictions using:
+
   ```python
   prediction_result = model.predict(X)[0]
   probability = model.predict_proba(X)[0][1]
   ```
 
+  ```
+
 - The model returns:
 
   Prediction result:
+
   ```text
     0 → Did Not Survive
     1 → Survived
   ```
-  
+
   - Prediction probability: Probability of survival between 0 and 1
 
 **3.5 Saving Predictions to the Database**
 
 - The prediction and input data are saved in the Django database:
+
   ```django
   prediction_obj = Prediction.objects.create(
                 input_data=input_data,
                 prediction_result=prediction_result,
                 prediction_probability=prediction_probability,)
+  ```
+
   ```
 
 - This allows the application to store prediction history.

@@ -64,5 +64,49 @@ document.querySelectorAll('.placeholder-select').forEach(select => {
     select.addEventListener('change', updateColor);
     updateColor(); 
 });
+
+
+
+const titleSelect = document.getElementById("id_title");
+const genderSelect = document.getElementById("id_gender");
+
+titleSelect.disabled = true;
+const titleOptions = {
+
+    "": [
+        ["", "Select Title"]
+    ],
+
+    "0": [
+        ["", "Select Title"],
+        ["Master", "Master"],
+        ["Mr", "Mr"],
+        ["Rare", "Other"]
+    ],
+
+    "1": [
+        ["", "Select Title"],
+        ["Miss", "Miss"],
+        ["Mrs", "Mrs"],
+        ["Rare", "Other"]
+    ]
+};
+
+genderSelect.addEventListener("change", function () {
+
+    const gender = this.value;
+    titleSelect.disabled = false;
+    titleSelect.innerHTML = "";
+    titleOptions[gender].forEach(function(option) {
+
+        const newOption = document.createElement("option");
+        newOption.value = option[0];
+        newOption.text = option[1];
+        titleSelect.appendChild(newOption);
+    });
+
+});
+
+
 </script>
 {% endblock %}

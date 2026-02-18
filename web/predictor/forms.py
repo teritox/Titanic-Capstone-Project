@@ -33,9 +33,12 @@ class PredictionForm(forms.Form):
     ]
 
     title = forms.TypedChoiceField(
-        choices=TITLE_CHOICES,
-        coerce=str,
-        widget=forms.Select(attrs={"class": "form-control placeholder-select"}),
+    choices=TITLE_CHOICES,
+    coerce=str,
+    widget=forms.Select(attrs={
+        "class": "form-control placeholder-select",
+        "id": "id_title"
+    }),
     )
 
     passenger_class = forms.TypedChoiceField(
@@ -45,9 +48,12 @@ class PredictionForm(forms.Form):
     )
 
     gender = forms.TypedChoiceField(
-        choices=GENDER_CHOICES,
-        coerce=int,
-        widget=forms.Select(attrs={"class": "form-control placeholder-select"}),
+    choices=GENDER_CHOICES,
+    coerce=int,
+    widget=forms.Select(attrs={
+        "class": "form-control placeholder-select",
+        "id": "id_gender"
+    }),
     )
 
     embark = forms.TypedChoiceField(
@@ -85,3 +91,19 @@ class PredictionForm(forms.Form):
             attrs={"class": "form-control", "placeholder": "Enter ticket fare"}
         ),
     )
+
+def clean(self):
+
+    cleaned_data = super().clean()
+    gender = cleaned_data.get("gender")
+    title = cleaned_data.get("title")
+
+    if gender == 0 and title not in ["Master", "Mr", "Rare"]:
+        raise forms.ValidationError("Invalid title for Male")
+
+
+    if gender == 1 and title not in ["Miss", "Mrs", "Rare"]:
+        raise forms.ValidationError("Invalid title for Female")
+
+    return cleaned_data
+
