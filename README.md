@@ -145,7 +145,7 @@ Age: The Z-score method and distribution visualization were used because Age is 
 
 Conclusion: No outliers were removed, as they represent valid data and help preserve important patterns for the machine learning model.
 
-#### 2️⃣ Feature Engineering
+#### 1.2 Feature Engineering
 
 - **FamilySize:**
   A new feature called `FamilySize` is created by adding `SibSp + Parch +1`. This represents the **total number of family members aboard**, including the passenger themselves.
