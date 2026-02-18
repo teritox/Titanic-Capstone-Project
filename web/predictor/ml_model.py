@@ -76,9 +76,6 @@ def prediction(input_data):
     print(X)  
     prediction_result = model.predict(X)[0]
     probability = model.predict_proba(X)[0][1]
-    print("The prediction result is:",prediction_result)
-    print("Type of prediction result",type(prediction_result))
-    print("The probability is:", probability)
-    print("Type of the probability",type(probability))
+    
     return prediction_result, probability
   
